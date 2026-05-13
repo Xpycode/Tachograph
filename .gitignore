@@ -1,0 +1,81 @@
+# === macOS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# === Xcode ===
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+DerivedData/
+build/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+.build/
+
+# === Swift Package Manager ===
+.swiftpm/
+Packages/
+Package.pins
+Package.resolved
+
+# === Build Outputs ===
+04_Exports/
+*.dmg
+*.app
+*.o
+*.a
+
+# === Debug / Profiling ===
+*.ips
+*.trace
+*.crash
+Instruments/
+
+# === Temporary / Planning Files ===
+*PLAN*.md
+*CHECKLIST*.md
+code-review*.md
+SESSION-LOG*.md
+fix-plan*.md
+*-addition.md
+TODO-*.md
+
+# === Claude / AI Tools ===
+.claude/
+.serena/
+.aider*
+.gemini*
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# === Secrets ===
+*.pem
+*.key
+.env
+.env.local
+.env.*.local
+credentials.json
+secrets.json
+
+# === Notarization artifacts ===
+*.p12
+notarization-*.json
+AuthKey_*.p8
