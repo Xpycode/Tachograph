@@ -1,5 +1,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
+import KeyboardShortcuts
 
 struct ControlsToolbar: View {
     @Bindable var vm: CaptureViewModel
@@ -70,6 +71,17 @@ struct ControlsToolbar: View {
                 .tint(.red)
             }
         }
+        .help(toggleHotkeyHint)
+    }
+
+    /// Tooltip shown on hover for the Start/Stop button. Pulled from the live
+    /// `KeyboardShortcuts` binding so it reflects user customisation made in
+    /// the Settings scene. Falls back gracefully when no shortcut is set.
+    private var toggleHotkeyHint: String {
+        if let shortcut = KeyboardShortcuts.getShortcut(for: .toggleCapture) {
+            return "Toggle capture (\(shortcut))"
+        }
+        return "Toggle capture (no hotkey set)"
     }
 
     private var clearButton: some View {

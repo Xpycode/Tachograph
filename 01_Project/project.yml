@@ -19,12 +19,19 @@ settings:
     SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
     CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: NO
 
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    from: 2.2.0
+
 targets:
   Tachograph:
     type: application
     platform: macOS
     sources:
       - path: Tachograph
+    dependencies:
+      - package: KeyboardShortcuts
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.lucesumbrarum.Tachograph

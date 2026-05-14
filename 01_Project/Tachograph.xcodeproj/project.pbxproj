@@ -9,15 +9,19 @@
 /* Begin PBXBuildFile section */
 		03AF8B40AD03881F1C209F13 /* CaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E242EE287C20BB9FA915E4 /* CaptureViewModel.swift */; };
 		050B3B434DC9D8555C9FE33A /* ModifierTapDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510A4043614D08FEAFE47EC8 /* ModifierTapDetector.swift */; };
+		0E23B90356DFA649A810C984 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3C66A8F90FED8EC66E6E2 /* SettingsView.swift */; };
 		0EDA953F93ACC04B0243FD0C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB84E79FA5BCB694C99E1C8 /* ContentView.swift */; };
 		151F26346A6B367D07054EF6 /* ClipboardExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4102249F08A08B9F921C64 /* ClipboardExporterTests.swift */; };
 		1BEAC589D7CDFD1FDB777B61 /* DelimitedExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEDCD3DC3AED9662902FE29 /* DelimitedExporter.swift */; };
 		2A2C8D59C266890C3142D556 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A525985C04459AEC0B4314 /* InputEvent.swift */; };
+		522D4AB0130AA3894C58DC41 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 0B162674ADCFCD56A3E234E0 /* KeyboardShortcuts */; };
 		61B7CDFE14C9F08D59E07F11 /* EventFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B678E771118A593F80D58 /* EventFilterTests.swift */; };
 		66A7AC70E64BE8FA1B968B42 /* DelimitedExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5013BA43A4E0D9859A116827 /* DelimitedExporterTests.swift */; };
 		900D30A8E731617A790FE626 /* ModifierTapDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443DC91ABDCAC3807DD09847 /* ModifierTapDetectorTests.swift */; };
+		9B0ABB1D7BDD85C0E93B70A1 /* HotkeyName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8530334DB2D45CD78023DF5D /* HotkeyName.swift */; };
 		9D84B9E85A74C6CBB4D6B47A /* CSVDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5702EC8A4B227BF98AAB9E35 /* CSVDocument.swift */; };
 		9DC9D48A2D708C742C49CD84 /* EventTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */; };
+		A036CF3A9E7B4EDB3A622CFD /* CaptureViewModelToggleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E1B1BDDC7A773E6D2EE333 /* CaptureViewModelToggleTests.swift */; };
 		A341C049BFAA55A1047523E7 /* KeyNameMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C128CF30B470229BF39814 /* KeyNameMapper.swift */; };
 		A812ED8AF876A184DED16B7F /* CanaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */; };
 		A8D583CF2747E424744F451C /* EventFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60302C0AEFE2EFA3511C2592 /* EventFilter.swift */; };
@@ -26,6 +30,7 @@
 		D1CC954AC24F7C12B23927C3 /* ClipboardExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */; };
 		D66D1D8E0FABAA3764A1B71F /* CaptureViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */; };
 		E8B8C86D8B4A103B87F8D4C6 /* PermissionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */; };
+		E97C8E9B0A40EC06DEC777B4 /* HotkeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABFB3382FA06F582E24D3D4 /* HotkeyService.swift */; };
 		EAA192F92FDEBB7A77FB7D85 /* EventTapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */; };
 		EBBD5891AC7395D96920A189 /* KeyNameMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F26812EFED533D79FE6D736 /* KeyNameMapperTests.swift */; };
 		ECC9AAA690C65CCEEFB0ECBA /* ControlsToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */; };
@@ -46,6 +51,7 @@
 		0FB84E79FA5BCB694C99E1C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		11A525985C04459AEC0B4314 /* InputEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEvent.swift; sourceTree = "<group>"; };
 		14C128CF30B470229BF39814 /* KeyNameMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyNameMapper.swift; sourceTree = "<group>"; };
+		14C3C66A8F90FED8EC66E6E2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		19E242EE287C20BB9FA915E4 /* CaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModel.swift; sourceTree = "<group>"; };
 		1BEDCD3DC3AED9662902FE29 /* DelimitedExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelimitedExporter.swift; sourceTree = "<group>"; };
 		3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsToolbar.swift; sourceTree = "<group>"; };
@@ -55,9 +61,11 @@
 		5013BA43A4E0D9859A116827 /* DelimitedExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelimitedExporterTests.swift; sourceTree = "<group>"; };
 		510A4043614D08FEAFE47EC8 /* ModifierTapDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTapDetector.swift; sourceTree = "<group>"; };
 		5702EC8A4B227BF98AAB9E35 /* CSVDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVDocument.swift; sourceTree = "<group>"; };
+		5ABFB3382FA06F582E24D3D4 /* HotkeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyService.swift; sourceTree = "<group>"; };
 		5F26812EFED533D79FE6D736 /* KeyNameMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyNameMapperTests.swift; sourceTree = "<group>"; };
 		60302C0AEFE2EFA3511C2592 /* EventFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFilter.swift; sourceTree = "<group>"; };
 		755B678E771118A593F80D58 /* EventFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFilterTests.swift; sourceTree = "<group>"; };
+		8530334DB2D45CD78023DF5D /* HotkeyName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyName.swift; sourceTree = "<group>"; };
 		865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanaryTests.swift; sourceTree = "<group>"; };
 		9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTable.swift; sourceTree = "<group>"; };
 		A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTapService.swift; sourceTree = "<group>"; };
@@ -66,8 +74,20 @@
 		B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExporter.swift; sourceTree = "<group>"; };
 		C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPanel.swift; sourceTree = "<group>"; };
 		E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModelTests.swift; sourceTree = "<group>"; };
+		F1E1B1BDDC7A773E6D2EE333 /* CaptureViewModelToggleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModelToggleTests.swift; sourceTree = "<group>"; };
 		F25EE251086BB339BBC23F0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3A617832AF46E9548EF4C120 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				522D4AB0130AA3894C58DC41 /* KeyboardShortcuts in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		09EC8A07FF57B70AA136CBE3 /* Services */ = {
@@ -77,6 +97,7 @@
 				5702EC8A4B227BF98AAB9E35 /* CSVDocument.swift */,
 				1BEDCD3DC3AED9662902FE29 /* DelimitedExporter.swift */,
 				A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */,
+				5ABFB3382FA06F582E24D3D4 /* HotkeyService.swift */,
 				14C128CF30B470229BF39814 /* KeyNameMapper.swift */,
 				510A4043614D08FEAFE47EC8 /* ModifierTapDetector.swift */,
 			);
@@ -122,6 +143,7 @@
 				3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */,
 				9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */,
 				C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */,
+				14C3C66A8F90FED8EC66E6E2 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -130,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				60302C0AEFE2EFA3511C2592 /* EventFilter.swift */,
+				8530334DB2D45CD78023DF5D /* HotkeyName.swift */,
 				11A525985C04459AEC0B4314 /* InputEvent.swift */,
 			);
 			path = Models;
@@ -140,6 +163,7 @@
 			children = (
 				865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */,
 				E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */,
+				F1E1B1BDDC7A773E6D2EE333 /* CaptureViewModelToggleTests.swift */,
 				4A4102249F08A08B9F921C64 /* ClipboardExporterTests.swift */,
 				5013BA43A4E0D9859A116827 /* DelimitedExporterTests.swift */,
 				755B678E771118A593F80D58 /* EventFilterTests.swift */,
@@ -166,6 +190,7 @@
 			buildPhases = (
 				A2A7CFC7A56A349D5F910706 /* Sources */,
 				033E50F4AEC92B0CF7B30FBF /* Resources */,
+				3A617832AF46E9548EF4C120 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -173,6 +198,7 @@
 			);
 			name = Tachograph;
 			packageProductDependencies = (
+				0B162674ADCFCD56A3E234E0 /* KeyboardShortcuts */,
 			);
 			productName = Tachograph;
 			productReference = B114C098EAC80EE117C3CB11 /* Tachograph.app */;
@@ -224,6 +250,9 @@
 			);
 			mainGroup = 2627DDCC62288430402C6AC0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1F497B99708363983DCA5952 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 75A8971C973A8F0FDEE2EF82 /* Products */;
 			projectDirPath = "";
@@ -253,6 +282,7 @@
 			files = (
 				A812ED8AF876A184DED16B7F /* CanaryTests.swift in Sources */,
 				D66D1D8E0FABAA3764A1B71F /* CaptureViewModelTests.swift in Sources */,
+				A036CF3A9E7B4EDB3A622CFD /* CaptureViewModelToggleTests.swift in Sources */,
 				151F26346A6B367D07054EF6 /* ClipboardExporterTests.swift in Sources */,
 				66A7AC70E64BE8FA1B968B42 /* DelimitedExporterTests.swift in Sources */,
 				61B7CDFE14C9F08D59E07F11 /* EventFilterTests.swift in Sources */,
@@ -274,10 +304,13 @@
 				A8D583CF2747E424744F451C /* EventFilter.swift in Sources */,
 				9DC9D48A2D708C742C49CD84 /* EventTable.swift in Sources */,
 				EAA192F92FDEBB7A77FB7D85 /* EventTapService.swift in Sources */,
+				9B0ABB1D7BDD85C0E93B70A1 /* HotkeyName.swift in Sources */,
+				E97C8E9B0A40EC06DEC777B4 /* HotkeyService.swift in Sources */,
 				2A2C8D59C266890C3142D556 /* InputEvent.swift in Sources */,
 				A341C049BFAA55A1047523E7 /* KeyNameMapper.swift in Sources */,
 				050B3B434DC9D8555C9FE33A /* ModifierTapDetector.swift in Sources */,
 				E8B8C86D8B4A103B87F8D4C6 /* PermissionPanel.swift in Sources */,
+				0E23B90356DFA649A810C984 /* SettingsView.swift in Sources */,
 				A97AA6199395E3862BD8E716 /* TachographApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,6 +562,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1F497B99708363983DCA5952 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0B162674ADCFCD56A3E234E0 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F497B99708363983DCA5952 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE699AC5340775868985A0EB /* Project object */;
 }

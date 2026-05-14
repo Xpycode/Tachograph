@@ -54,6 +54,24 @@ final class CaptureViewModel {
         status = .idle
     }
 
+    /// Toggles capture state. Invoked by the global hotkey as well as any
+    /// future programmatic callers. Refreshes accessibility permission first
+    /// so a denied state surfaces the existing error rather than silently
+    /// no-op'ing — `start()` would otherwise just `guard` past.
+    func toggle() {
+        refreshPermission()
+        guard permissionState == .granted else {
+            lastError = "Accessibility permission required."
+            return
+        }
+        switch status {
+        case .idle:
+            start()
+        case .capturing:
+            stop()
+        }
+    }
+
     func clear() {
         events.removeAll()
         lastTimestamp = nil
