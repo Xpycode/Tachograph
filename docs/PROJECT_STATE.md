@@ -9,11 +9,11 @@
 - **Started:** 2026-05-13
 
 ## Current Position
-- **Funnel:** **v2 Wave 1 complete** — CSV export + filter/search shipped on `feature/v2-wave1`
-- **Phase:** Wave 1 implementation done, awaiting merge + Wave 2 (Settings + hotkey) start
-- **Focus:** Merge `feature/v2-wave1` → main, then start Wave 2 (W2-A hotkey, requires SPM dep)
-- **Status:** build green, 60+ tests passing (added 11 in W1-A + 8 in W1-B), UI verified in running app
-- **Last updated:** 2026-05-14
+- **Funnel:** **v2 Wave 2 in progress** — W2-A + W2-B + polish landed; W2-C (per-event app context) up next
+- **Phase:** Wave 2 features built on `feature/v2-wave2`; one mini-feature (W2-C) before merge
+- **Focus:** Implement W2-C: capture frontmost-app bundle ID per InputEvent, add "App" column to table + CSV/TSV
+- **Status:** build green, all tests passing, Settings UI verified (sizing + picker fixed); CFD-1/2/3 ratified
+- **Last updated:** 2026-05-15
 
 ## Funnel Progress
 
@@ -21,19 +21,19 @@
 |--------|--------|------|
 | **v1 Define → Ship** | done | v1.0.0 notarized + published |
 | **v2 Define** | done | Spec at `specs/v2-features.md` — 6 features, 3 waves |
-| **v2 Plan** | done | Phased plan + cross-feature decisions logged as PENDING |
-| **v2 Build** | wave 1 done | W1-A CSV + W1-B filter shipped on `feature/v2-wave1` |
+| **v2 Plan** | done | Phased plan + cross-feature decisions ratified through CFD-3 |
+| **v2 Build** | wave 2 in progress | W1 done (merged), W2-A + W2-B + polish on `feature/v2-wave2`; W2-C next |
 | **v2 Ship** | not started | — |
 
 ## v2 Wave Progress
 ```
-[##############################..............] Wave 1 done; Wave 2 ready
+[####################################........] Wave 2 in progress; W2-C remaining
 ```
 
 | Wave | Status | Features | Complexity |
 |------|--------|----------|------------|
 | W1 (parallel) | ✅ done | CSV export + filter/search | S + S |
-| W2 (sequential) | ready | hotkey → per-app filter | S + S/M |
+| W2 (sequential) | 🟡 in progress | W2-A hotkey ✅ → W2-B per-app filter ✅ → W2-C app context column | S + S/M + S |
 | W3 (sequential) | blocked | key-hold duration → heat-map | M + M |
 
 ## Readiness
