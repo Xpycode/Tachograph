@@ -8,7 +8,7 @@ struct TachographApp: App {
         WindowGroup {
             ContentView(vm: vm)
         }
-        .defaultSize(width: 720, height: 520)
+        .defaultSize(width: 1040, height: 560)
         .windowResizability(.contentMinSize)
         .commands {
             CommandGroup(replacing: .newItem) {}
