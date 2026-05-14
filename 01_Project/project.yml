@@ -1,6 +1,6 @@
-name: DownKeyCounter
+name: Tachograph
 options:
-  bundleIdPrefix: dev.gmkonsortium
+  bundleIdPrefix: com.lucesumbrarum
   deploymentTarget:
     macOS: "15.0"
   createIntermediateGroups: true
@@ -20,47 +20,47 @@ settings:
     CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: NO
 
 targets:
-  DownKeyCounter:
+  Tachograph:
     type: application
     platform: macOS
     sources:
-      - path: DownKeyCounter
+      - path: Tachograph
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.gmkonsortium.DownKeyCounter
-        PRODUCT_NAME: DownKeyCounter
-        CODE_SIGN_ENTITLEMENTS: DownKeyCounter/DownKeyCounter.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.lucesumbrarum.Tachograph
+        PRODUCT_NAME: Tachograph
+        CODE_SIGN_ENTITLEMENTS: Tachograph/Tachograph.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.utilities
         INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Gregor Müller. All rights reserved."
-        INFOPLIST_KEY_CFBundleDisplayName: DownKeyCounter
+        INFOPLIST_KEY_CFBundleDisplayName: Tachograph
 
-  DownKeyCounterTests:
+  TachographTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - path: DownKeyCounterTests
+      - path: TachographTests
     dependencies:
-      - target: DownKeyCounter
+      - target: Tachograph
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.gmkonsortium.DownKeyCounterTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.lucesumbrarum.TachographTests
         BUNDLE_LOADER: "$(TEST_HOST)"
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/DownKeyCounter.app/Contents/MacOS/DownKeyCounter"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Tachograph.app/Contents/MacOS/Tachograph"
 
 schemes:
-  DownKeyCounter:
+  Tachograph:
     build:
       targets:
-        DownKeyCounter: all
-        DownKeyCounterTests: [test]
+        Tachograph: all
+        TachographTests: [test]
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - DownKeyCounterTests
+        - TachographTests
     archive:
       config: Release

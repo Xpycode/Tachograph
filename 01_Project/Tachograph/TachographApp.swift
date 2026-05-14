@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct DownKeyCounterApp: App {
+struct TachographApp: App {
     @State private var vm = CaptureViewModel()
 
     var body: some Scene {

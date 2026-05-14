@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E3FE3CC445A075D6FF9E2642"
-               BuildableName = "DownKeyCounter.app"
-               BlueprintName = "DownKeyCounter"
-               ReferencedContainer = "container:DownKeyCounter.xcodeproj">
+               BlueprintIdentifier = "41B68F3CCCDBFAF636AEF5BD"
+               BuildableName = "Tachograph.app"
+               BlueprintName = "Tachograph"
+               ReferencedContainer = "container:Tachograph.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,10 +29,10 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA9902964F1F076535F58313"
-               BuildableName = "DownKeyCounterTests.xctest"
-               BlueprintName = "DownKeyCounterTests"
-               ReferencedContainer = "container:DownKeyCounter.xcodeproj">
+               BlueprintIdentifier = "9A200D952FE2B24A89EB491B"
+               BuildableName = "TachographTests.xctest"
+               BlueprintName = "TachographTests"
+               ReferencedContainer = "container:Tachograph.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +46,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E3FE3CC445A075D6FF9E2642"
-            BuildableName = "DownKeyCounter.app"
-            BlueprintName = "DownKeyCounter"
-            ReferencedContainer = "container:DownKeyCounter.xcodeproj">
+            BlueprintIdentifier = "41B68F3CCCDBFAF636AEF5BD"
+            BuildableName = "Tachograph.app"
+            BlueprintName = "Tachograph"
+            ReferencedContainer = "container:Tachograph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -58,10 +58,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA9902964F1F076535F58313"
-               BuildableName = "DownKeyCounterTests.xctest"
-               BlueprintName = "DownKeyCounterTests"
-               ReferencedContainer = "container:DownKeyCounter.xcodeproj">
+               BlueprintIdentifier = "9A200D952FE2B24A89EB491B"
+               BuildableName = "TachographTests.xctest"
+               BlueprintName = "TachographTests"
+               ReferencedContainer = "container:Tachograph.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -82,10 +82,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E3FE3CC445A075D6FF9E2642"
-            BuildableName = "DownKeyCounter.app"
-            BlueprintName = "DownKeyCounter"
-            ReferencedContainer = "container:DownKeyCounter.xcodeproj">
+            BlueprintIdentifier = "41B68F3CCCDBFAF636AEF5BD"
+            BuildableName = "Tachograph.app"
+            BlueprintName = "Tachograph"
+            ReferencedContainer = "container:Tachograph.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -101,10 +101,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E3FE3CC445A075D6FF9E2642"
-            BuildableName = "DownKeyCounter.app"
-            BlueprintName = "DownKeyCounter"
-            ReferencedContainer = "container:DownKeyCounter.xcodeproj">
+            BlueprintIdentifier = "41B68F3CCCDBFAF636AEF5BD"
+            BuildableName = "Tachograph.app"
+            BlueprintName = "Tachograph"
+            ReferencedContainer = "container:Tachograph.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

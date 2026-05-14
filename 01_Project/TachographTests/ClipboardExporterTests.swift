@@ -1,5 +1,5 @@
 import XCTest
-@testable import DownKeyCounter
+@testable import Tachograph
 
 final class ClipboardExporterTests: XCTestCase {
     private let header = "Key / Button\tUTC Time\tΔ (ms)"

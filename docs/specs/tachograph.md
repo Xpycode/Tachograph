@@ -1,4 +1,4 @@
-# Spec: DownKeyCounter v1
+# Spec: Tachograph v1
 
 **Status:** draft (awaiting user review)
 **Owner:** gm.konsortium@yahoo.dk
@@ -85,7 +85,7 @@ When the table is empty (just launched or after Clear): centered hint — "Press
 
 When the event tap can't install: replace the entire window content with a centered panel:
 > **Accessibility permission needed**
-> DownKeyCounter watches your input system-wide, so macOS needs your permission.
+> Tachograph watches your input system-wide, so macOS needs your permission.
 > [ Open Privacy Settings ] [ I've granted it — relaunch ]
 
 **Permission flow rules:**
@@ -161,7 +161,7 @@ v1 stores all events in a single in-memory `[InputEvent]` and renders via SwiftU
 
 A v1 release ships when **all** of these hold:
 
-1. **Capture works system-wide.** Pressing keys in any other app (Safari, Mail, Terminal) adds rows to the DownKeyCounter table within ~50 ms.
+1. **Capture works system-wide.** Pressing keys in any other app (Safari, Mail, Terminal) adds rows to the Tachograph table within ~50 ms.
 2. **Start/Stop is symmetric.** Clicking Stop halts new rows immediately; clicking Start resumes; rows already in the table are preserved.
 3. **Clear clears.** Clear empties the table. If >50 rows are present, a confirm dialog asks first.
 4. **Copy Log produces valid TSV.** Pasting into Numbers/Excel produces three columns with the same content as the on-screen table. Header row is included.
@@ -170,7 +170,7 @@ A v1 release ships when **all** of these hold:
 7. **Interval column.** First event of a session shows `—`. Every subsequent event shows the integer millisecond delta from the previous event.
 8. **Permission UX.** Launching without Accessibility shows the permission panel, not a broken-looking empty table. The "Open Privacy Settings" button opens the correct pane. After granting and relaunching, capture works on next Start.
 9. **Mouse buttons.** Left, right, middle, and at least two extra mouse buttons (Mouse 3, Mouse 4) produce rows with correct labels.
-10. **Quit discards log.** Quit → relaunch → table is empty. No JSON or other file is written to `~/Library/Application Support/DownKeyCounter` or anywhere else.
+10. **Quit discards log.** Quit → relaunch → table is empty. No JSON or other file is written to `~/Library/Application Support/Tachograph` or anywhere else.
 11. **No network — auditable.** All of the following hold in Release: (a) the app does **not** declare `com.apple.security.network.client` in its entitlements; (b) no source file imports `URLSession`, `Network`, `CFNetwork`, `WebKit`, or `OSLog` remote sinks; (c) a final code-review checklist item before shipping confirms zero outbound calls.
 12. **Notarized build runs from a fresh user account.** Install the DMG on a clean macOS 15 user, grant Accessibility, capture works.
 
