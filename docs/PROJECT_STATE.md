@@ -9,72 +9,74 @@
 - **Started:** 2026-05-13
 
 ## Current Position
-- **Funnel:** **shipped** — v1.0.0 live on GitHub
-- **Phase:** v1 complete; idle until next iteration
-- **Focus:** Backlog (`docs/ideas.md`) for v1.1 when ready
-- **Status:** idle — v1.0.0 published
+- **Funnel:** **v2 planning complete** — v1.0.0 shipped, v2 spec drafted
+- **Phase:** v2 plan ready; awaiting user approval to begin Wave 1
+- **Focus:** Wave 1 implementation (CSV export + filter/search, parallel, S complexity)
+- **Status:** planning done — `docs/specs/v2-features.md` written, 4 cross-feature decisions logged as PENDING
 - **Last updated:** 2026-05-14
 
 ## Funnel Progress
 
 | Funnel | Status | Gate |
 |--------|--------|------|
-| **Define** | done | Spec at `specs/tachograph.md` reviewed + tightened |
-| **Plan** | done | `IMPLEMENTATION_PLAN.md` — 7 waves, ~20 atomic tasks |
-| **Build** | done | Waves 1–5 GREEN. Wave 6 functional AC visibly verified. |
-| **Ship** | done | v1.0.0 notarized, DMG packaged, GitHub release published |
+| **v1 Define → Ship** | done | v1.0.0 notarized + published |
+| **v2 Define** | done | Spec at `specs/v2-features.md` — 6 features, 3 waves |
+| **v2 Plan** | done | Phased plan + cross-feature decisions logged as PENDING |
+| **v2 Build** | not started | Awaiting user approval to start Wave 1 |
+| **v2 Ship** | not started | — |
 
-## Phase Progress
+## v2 Wave Progress
 ```
-[####################] 100% — v1.0.0 shipped 2026-05-14
+[####################........................] v2 plan complete; Wave 1 ready to start
 ```
 
-| Phase | Status | Tasks |
-|-------|--------|-------|
-| Discovery | done | ✓ |
-| Planning | done | ✓ |
-| Implementation | done | Waves 1–5 complete |
-| Verification | done | AC #1, 2, 5, 6, 7, 8, 9, 11 visibly verified |
-| Polish (Wave 7) | done | Icon, signing, notarization, DMG, README, LICENSE, GitHub release |
+| Wave | Status | Features | Complexity |
+|------|--------|----------|------------|
+| W1 (parallel) | ready | CSV export + filter/search | S + S |
+| W2 (sequential) | blocked | hotkey → per-app filter | S + S/M |
+| W3 (sequential) | blocked | key-hold duration → heat-map | M + M |
 
 ## Readiness
 
 | Dimension | Status | Notes |
 |-----------|--------|-------|
-| Features | ✅ done | All v1 spec features implemented |
-| UI/Polish | 🔶 WIP | App working; needs app icon |
-| Testing | ✅ done | 44 unit tests green; manual AC walked |
-| Docs | ✅ done | CLAUDE.md, README, spec, decisions, sessions all current |
-| Distribution | 🔶 WIP | User will Archive + Notarize in Xcode Organizer; Developer ID Application cert needed |
+| v1 Features | ✅ done | All v1 spec features implemented + shipped |
+| v2 Spec | ✅ done | `specs/v2-features.md` — 6 features across 3 waves |
+| v2 Decisions | 🔶 pending user signoff | 4 cross-feature decisions logged as `[PENDING]` |
+| Testing | ✅ done | 44 unit tests green from v1 |
+| Docs | ✅ done | CLAUDE.md, README, both specs, decisions, sessions all current |
+| Distribution (v1) | ✅ done | v1.0.0 notarized + published |
 
 ## Validation Gates
-- [x] **Define → Plan**: Spec reviewed + tightened (6 gaps closed 2026-05-13)
-- [x] **Plan → Build**: `IMPLEMENTATION_PLAN.md` exists with 7 waves, ~20 atomic tasks
-- [x] **Build → Ship**: Notarized DMG built, signed by Developer ID, stapled, Gatekeeper accepts
+- [x] **v1 Define → Plan → Build → Ship** (all complete 2026-05-14)
+- [x] **v2 Define → Plan** (spec + phased plan complete)
+- [ ] **v2 Plan → Build** — gated on user approval of 4 cross-feature decisions
 
 ## Active Decisions
-- 2026-05-14: **v1.0.0 published** at https://github.com/Xpycode/Tachograph/releases/tag/v1.0.0. Notarized DMG (6.5 MB, SHA256 `e1b43de1…`), MIT-licensed, public. Repo at https://github.com/Xpycode/Tachograph.
-- 2026-05-14: Renamed `DownKeyCounter` → **Tachograph**. Reason: name now matches function (records input timing) rather than describing implementation (keyDown events). Atomic rename via `rename/to-tachograph` branch; 44 tests still pass; git tracks file history at 82–100% similarity.
-- 2026-05-14: Bundle ID prefix corrected to `com.lucesumbrarum` per `apple-developer.md` primary prefix. Final bundle id: `com.lucesumbrarum.Tachograph`. Earlier `dev.gmkonsortium.*` was synthesized from email — wrong.
-- 2026-05-14: Dev builds signed with Apple Development cert (Team ID `FDMSRXXN73`) instead of ad-hoc, so TCC Accessibility grants survive rebuilds. Gotcha logged: team ID is the cert's `OU` field, not the suffix in its CN.
-- 2026-05-14: User will handle Archive + Notarize inside Xcode Organizer; Claude handles icon pipeline + DMG + release.
-- 2026-05-14: `EventTapService` is `@MainActor final class`, not `actor`, to avoid Task-hop reordering of CGEventTap callbacks (see `decisions.md`).
-- 2026-05-13: macOS 15 Sequoia minimum.
-- 2026-05-13: Global capture via CGEventTap, sandbox off, direct distribution only.
-- 2026-05-13: Δ column = inter-event interval (ms), not key-hold duration.
-- 2026-05-13: Session-only log; clipboard is the only data egress.
+
+### v2 (pending user signoff)
+- 2026-05-14: **CFD-1** — single `SettingsView.swift` shared between W2-A (hotkey) and W2-B (per-app filter). Built in W2-A, extended in W2-B.
+- 2026-05-14: **CFD-2** — adopt `sindresorhus/KeyboardShortcuts` SPM (`from: "2.2.0"`). First 3rd-party dep. Carbon under the hood, *consumes* events, ships SwiftUI Recorder. ~150 LOC vs ~250 hand-rolled.
+- 2026-05-14: **CFD-3** — event-tap stream stays `AsyncStream<InputEvent>` through W2-B; reshapes to `AsyncStream<EventTapMessage>` only in W3-A.
+- 2026-05-14: **CFD-4** — reverse the 2026-05-13 "no key-hold" decision. New entry supersedes; pairing strategy is dictionary-of-pending-downs keyed by keyCode, drop auto-repeat, accept `nil` for chord-swallowed `keyUp`.
+
+### v1 (shipped, historical)
+- 2026-05-14: **v1.0.0 published** at https://github.com/Xpycode/Tachograph/releases/tag/v1.0.0. Notarized DMG (6.5 MB, SHA256 `e1b43de1…`), MIT-licensed, public.
+- 2026-05-14: Renamed `DownKeyCounter` → **Tachograph**. Bundle ID `com.lucesumbrarum.Tachograph`. Team ID `FDMSRXXN73` (cert's `OU` field, not the CN suffix).
+- 2026-05-14: `EventTapService` is `@MainActor final class`, not `actor` — see `decisions.md` for the <50ms callback budget rationale.
+- 2026-05-13: macOS 15 Sequoia minimum; global capture via CGEventTap; sandbox off; session-only log.
 
 ## Blockers
-*(none)*
+*(none — Wave 1 ready to start on user approval)*
 
 ## Resume
 
-**Project is shipped. Next session is idle.** Open paths if/when picked back up:
+**v2 planning complete; awaiting user signoff to begin Wave 1.**
 
-- **Backlog for v1.1+**: see `docs/ideas.md` — key-hold duration column, pause hotkey, filter/search, per-app capture filter, heat-map view, CSV-to-file export, multi-session history, menu-bar mode, auto-clear timer, etc.
-- **Distribution polish**: notarize the DMG itself (currently only the `.app` inside is stapled — fine for browser downloads, but airdropped DMGs may show a one-time Gatekeeper warning before launch).
+- **If approving:** start **Wave 1** — CSV export (`W1-A`) + filter/search (`W1-B`) in parallel. Both S complexity, isolated to UI + exporter layers, no capture-pipeline risk.
+- **If reshaping:** revisit cross-feature decisions in `decisions.md` (CFD-1..4) or per-feature shape in `docs/specs/v2-features.md`.
 - **Folder rename housekeeping**: repo folder is still `1-macOS/DownKeyCounter/` on disk. Between sessions: close terminals/editors, `mv DownKeyCounter Tachograph`, reopen Claude Code there.
-- **Stale plan doc**: `IMPLEMENTATION_PLAN.md` is fully checked off — archive to `docs/sessions/` or delete.
+- **Stale plan doc**: `IMPLEMENTATION_PLAN.md` from v1 is fully checked off — archive or delete before v2 planning artifacts proliferate.
 
 ---
 *Updated by Claude. Source of truth for project position.*

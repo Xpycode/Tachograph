@@ -105,4 +105,80 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ---
 
+## 2026-05-14 — v2: Single Settings scene shared across features [PENDING]
+
+**Status:** pending — finalize on Wave 2 landing.
+
+**Context:** Both *Pause/resume hotkey* (W2-A) and *Per-app filter* (W2-B) need a place to live. Two independent windows would be wasteful and SwiftUI's `Settings { }` scene is the standard macOS pattern.
+
+**Decision:** One `SettingsView.swift` with two sections (Hotkey, App Filter). Built in W2-A, extended in W2-B.
+
+**Rationale:** Standard macOS UX (single `⌘,` window); avoids duplicating `SettingsLink` plumbing; lets future features (e.g. rolling buffer, auto-clear) plug in as additional sections.
+
+**Consequences:** W2-A and W2-B are sequential (W2-A first), sharing the same file. Other waves don't depend on Settings.
+
+---
+
+## 2026-05-14 — v2: Adopt `sindresorhus/KeyboardShortcuts` SPM dependency [PENDING]
+
+**Status:** pending — first 3rd-party dep in the project.
+
+**Context:** W2-A (pause/resume hotkey) needs a global hotkey that *consumes* the event (so it doesn't leak to the focused app). Options compared:
+
+| Option | Consumes? | Maintained? | LOC to integrate |
+|---|---|---|---|
+| `NSEvent.addGlobalMonitorForEvents` | No | ✓ | ~50 (but disqualifying) |
+| Upgrade existing CGEventTap to non-listenOnly | Yes | ✓ | ~200 + risks <50ms budget |
+| Raw `Carbon/HIToolbox` `RegisterEventHotKey` | Yes | ✓ | ~250 + custom recorder UI |
+| `sindresorhus/KeyboardShortcuts` SPM (~2.2.x) | Yes (Carbon under the hood) | ✓ active | ~150 incl. Recorder UI |
+
+**Decision:** Adopt `KeyboardShortcuts`. Pin `from: "2.2.0"`.
+
+**Rationale:** Smallest glue layer (~150 LOC); ships SwiftUI `Recorder` view; native `UserDefaults` persistence under its own key prefix; actively maintained Swift-first package. Avoids reimplementing what's already battle-tested. The "first 3rd-party dep" bar is real but the saved code far exceeds the dep cost.
+
+**Consequences:**
+- `project.yml` gains an SPM ref; `Package.resolved` joins source control.
+- Persistence is the package's UserDefaults — do **not** also bind via `@AppStorage` for the combo. Single source of truth.
+- Default combo: **`⌃⌥⌘R`** (Control-Option-Command-R). Four-key chord, no system collisions, mnemonic for "Record".
+
+---
+
+## 2026-05-14 — v2: Event-tap stream type changes only in Wave 3 [PENDING]
+
+**Status:** pending — applies when W3-A lands.
+
+**Context:** W3-A (key-hold duration) needs the service to emit two kinds of messages: append-row and update-row-by-id. Today the service yields `AsyncStream<InputEvent>`. W2-B (per-app filter) also touches the service, but only to gate `yield(...)` on bundle-ID membership.
+
+**Decision:** Per-app filter (W2-B) lands while the stream still yields `InputEvent` directly. The shape change to `AsyncStream<EventTapMessage>` happens only in W3-A.
+
+**Rationale:** Keeps W2-B's change surface minimal (one guard in `handle`). Avoids forcing a stream-type refactor through a wave that doesn't benefit from it.
+
+**Consequences:**
+- W3-A's PR is the only one that touches both `EventTapService` and `CaptureViewModel.append(raw:)` at the same time.
+- `EventTapMessage` enum will be `Sendable` and exhaustive: `.append(InputEvent) | .holdUpdate(id: UUID, holdMs: Int)`.
+- Per-app filter's allow-list gate runs *before* yield regardless of message kind, so it composes cleanly with W3-A.
+
+---
+
+## 2026-05-14 — v2: Reverse the 2026-05-13 "no key-hold" decision [PENDING]
+
+**Status:** pending — supersedes the 2026-05-13 "Duration column = inter-event interval (not key-hold duration)" entry above when W3-A lands.
+
+**Context:** The 2026-05-13 decision deferred key-hold duration in favour of inter-event interval, citing the "messy state machine" of keyDown→keyUp pairing. The user now wants both columns: Δ (ms) stays for inter-event timing, **Hold (ms)** adds for per-key press duration.
+
+**Decision:** Adopt the dictionary-pairing approach for W3-A. On `keyDown`, emit a row immediately with `holdMs = nil` and record `(keyCode → (rowID, downTimestamp))` in a `nonisolated(unsafe)` dictionary on `EventTapService`. On `keyUp`, emit `.holdUpdate(id, holdMs)`; ViewModel mutates the existing row by id. Auto-repeat `keyDown`s (`keyboardEventAutorepeat != 0`) are dropped so a held key measures the full press-to-release span. Rows still pending at `stop()` keep `holdMs = nil` ("—").
+
+**Rationale:**
+- The original concern was that emit-on-keyUp delays UI feedback; pairing strategy (emit on keyDown, patch on keyUp) sidesteps that — the row appears instantly, the hold figure fills in when known.
+- Doubling the event mask (adding keyUp variants) doubles callback rate but per-call work stays O(1) dict ops; <50ms budget unchanged.
+- System-chord-swallowed `keyUp` (Cmd+Tab, Cmd+Space) leaves a permanent pending entry. We accept stale `holdMs = nil` rather than guessing an elapsed value — fewer surprises in the data.
+
+**Consequences:**
+- `InputEvent` gains optional `holdMs: Int?`.
+- Stream payload becomes `EventTapMessage` (see CFD-3).
+- 4th table column "Hold (ms)" right of Δ. TSV/CSV header gains the column.
+- The 2026-05-13 entry stays in the log (history is history) but is annotated as "Superseded by 2026-05-14 v2 entry."
+
+---
+
 *Template at the bottom of `docs/00_base.md` references. Add new decisions as they are made.*
