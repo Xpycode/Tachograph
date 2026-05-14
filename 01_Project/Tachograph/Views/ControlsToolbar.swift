@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ControlsToolbar: View {
     @Bindable var vm: CaptureViewModel
@@ -11,6 +12,7 @@ struct ControlsToolbar: View {
                 startStopButton
                 clearButton
                 copyLogButton
+                saveCSVButton
                 Spacer()
                 statusPill
                 eventCount
@@ -32,6 +34,14 @@ struct ControlsToolbar: View {
         ) {
             Button("Clear", role: .destructive) { vm.clear() }
             Button("Cancel", role: .cancel) {}
+        }
+        .fileExporter(
+            isPresented: $vm.isExporting,
+            document: vm.makeCSVDocument(),
+            contentType: .commaSeparatedText,
+            defaultFilename: vm.defaultExportFilename()
+        ) { result in
+            vm.handleExport(result)
         }
     }
 
@@ -77,6 +87,16 @@ struct ControlsToolbar: View {
             vm.copyLog()
         } label: {
             Label("Copy Log", systemImage: "doc.on.clipboard")
+        }
+        .buttonStyle(.bordered)
+        .disabled(vm.events.isEmpty)
+    }
+
+    private var saveCSVButton: some View {
+        Button {
+            vm.isExporting = true
+        } label: {
+            Label("Save CSV…", systemImage: "square.and.arrow.down")
         }
         .buttonStyle(.bordered)
         .disabled(vm.events.isEmpty)

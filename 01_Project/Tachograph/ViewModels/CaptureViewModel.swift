@@ -12,6 +12,10 @@ final class CaptureViewModel {
     private(set) var permissionState: PermissionState = .denied
     private(set) var lastError: String?
 
+    /// Two-way binding target for SwiftUI's `.fileExporter(isPresented:)`. Must
+    /// remain a stored, settable `var` — `private(set)` would block the binding.
+    var isExporting: Bool = false
+
     private let service: EventTapService
     private var consumeTask: Task<Void, Never>?
     private var lastTimestamp: Date?
@@ -61,6 +65,43 @@ final class CaptureViewModel {
 
     func clearLastError() {
         lastError = nil
+    }
+
+    func makeCSVDocument() -> CSVDocument {
+        let csv = DelimitedExporter.render(
+            events: events,
+            delimiter: ",",
+            quote: "\"",
+            lineEnding: "\r\n"
+        )
+        return CSVDocument(text: csv)
+    }
+
+    /// Default filename suggested to `.fileExporter` — no extension (the system
+    /// appends `.csv`), no `:` (display-safe on macOS). Uses local timezone so
+    /// the suggested name matches the user's wall clock; `en_US_POSIX` locale
+    /// keeps the digits stable across user locales.
+    func defaultExportFilename() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "yyyy-MM-dd HH-mm-ss"
+        return "Tachograph \(formatter.string(from: Date()))"
+    }
+
+    func handleExport(_ result: Result<URL, Error>) {
+        switch result {
+        case .success:
+            lastError = nil
+        case .failure(let error):
+            // CocoaError(.userCancelled) is delivered as a thrown error on
+            // older builds in some seeds; tolerate by suppressing the standard
+            // cancellation case. Everything else surfaces in the error badge.
+            if let cocoa = error as? CocoaError, cocoa.code == .userCancelled {
+                return
+            }
+            lastError = "Export failed: \(error.localizedDescription)"
+        }
     }
 
     nonisolated static func intervalMs(from previous: Date?, to current: Date) -> Int? {
