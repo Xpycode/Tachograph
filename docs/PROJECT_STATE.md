@@ -9,10 +9,10 @@
 - **Started:** 2026-05-13
 
 ## Current Position
-- **Funnel:** ship prep (Wave 7)
-- **Phase:** functional build verified; awaiting icon + notarized archive
-- **Focus:** Awaiting Kling-AI-generated app icon at `02_Design/AppIcon-1024.png`; then Xcode Archive → Distribute → Notarize, then DMG + GitHub release
-- **Status:** waiting for user (icon generation)
+- **Funnel:** **shipped** — v1.0.0 live on GitHub
+- **Phase:** v1 complete; idle until next iteration
+- **Focus:** Backlog (`docs/ideas.md`) for v1.1 when ready
+- **Status:** idle — v1.0.0 published
 - **Last updated:** 2026-05-14
 
 ## Funnel Progress
@@ -21,12 +21,12 @@
 |--------|--------|------|
 | **Define** | done | Spec at `specs/tachograph.md` reviewed + tightened |
 | **Plan** | done | `IMPLEMENTATION_PLAN.md` — 7 waves, ~20 atomic tasks |
-| **Build** | done | Waves 1–5 GREEN. Wave 6 functional AC #1–#9, #11 visibly verified; #3/#4/#10 trivial-remaining. |
-| **Ship** | active | Wave 7: icon → archive → notarize → DMG → release |
+| **Build** | done | Waves 1–5 GREEN. Wave 6 functional AC visibly verified. |
+| **Ship** | done | v1.0.0 notarized, DMG packaged, GitHub release published |
 
 ## Phase Progress
 ```
-[##################..] 90% — Wave 6 fixes shipped to main; ship prep underway.
+[####################] 100% — v1.0.0 shipped 2026-05-14
 ```
 
 | Phase | Status | Tasks |
@@ -34,8 +34,8 @@
 | Discovery | done | ✓ |
 | Planning | done | ✓ |
 | Implementation | done | Waves 1–5 complete |
-| Verification | done | AC #1, 2, 5, 6, 7, 8, 9, 11 visibly verified; #3/#4/#10 trivial |
-| Polish (Wave 7) | 🔶 active | Icon (awaiting Kling AI gen) → Archive in Xcode → DMG → GitHub release |
+| Verification | done | AC #1, 2, 5, 6, 7, 8, 9, 11 visibly verified |
+| Polish (Wave 7) | done | Icon, signing, notarization, DMG, README, LICENSE, GitHub release |
 
 ## Readiness
 
@@ -50,9 +50,10 @@
 ## Validation Gates
 - [x] **Define → Plan**: Spec reviewed + tightened (6 gaps closed 2026-05-13)
 - [x] **Plan → Build**: `IMPLEMENTATION_PLAN.md` exists with 7 waves, ~20 atomic tasks
-- [ ] **Build → Ship**: Awaiting notarized DMG + clean-install verification (AC #12)
+- [x] **Build → Ship**: Notarized DMG built, signed by Developer ID, stapled, Gatekeeper accepts
 
 ## Active Decisions
+- 2026-05-14: **v1.0.0 published** at https://github.com/Xpycode/Tachograph/releases/tag/v1.0.0. Notarized DMG (6.5 MB, SHA256 `e1b43de1…`), MIT-licensed, public. Repo at https://github.com/Xpycode/Tachograph.
 - 2026-05-14: Renamed `DownKeyCounter` → **Tachograph**. Reason: name now matches function (records input timing) rather than describing implementation (keyDown events). Atomic rename via `rename/to-tachograph` branch; 44 tests still pass; git tracks file history at 82–100% similarity.
 - 2026-05-14: Bundle ID prefix corrected to `com.lucesumbrarum` per `apple-developer.md` primary prefix. Final bundle id: `com.lucesumbrarum.Tachograph`. Earlier `dev.gmkonsortium.*` was synthesized from email — wrong.
 - 2026-05-14: Dev builds signed with Apple Development cert (Team ID `FDMSRXXN73`) instead of ad-hoc, so TCC Accessibility grants survive rebuilds. Gotcha logged: team ID is the cert's `OU` field, not the suffix in its CN.
@@ -67,11 +68,13 @@
 *(none)*
 
 ## Resume
-**Next steps on resume:**
-1. User: re-grant Accessibility for `com.lucesumbrarum.Tachograph` (one-time after the rename — new bundle id, fresh TCC entry).
-2. User: Product → Archive in Xcode (scheme `Tachograph`) → Distribute App → Developer ID → Notarize. Export the notarized `.app` to `04_Exports/v1.0.0/`.
-3. Claude: package signed DMG via `hdiutil`, draft GitHub v1.0.0 release notes, verify mount + first-launch on a clean account if available.
-4. (Optional follow-up) User: rename repo folder `1-macOS/DownKeyCounter/` → `1-macOS/Tachograph/` between sessions to match.
+
+**Project is shipped. Next session is idle.** Open paths if/when picked back up:
+
+- **Backlog for v1.1+**: see `docs/ideas.md` — key-hold duration column, pause hotkey, filter/search, per-app capture filter, heat-map view, CSV-to-file export, multi-session history, menu-bar mode, auto-clear timer, etc.
+- **Distribution polish**: notarize the DMG itself (currently only the `.app` inside is stapled — fine for browser downloads, but airdropped DMGs may show a one-time Gatekeeper warning before launch).
+- **Folder rename housekeeping**: repo folder is still `1-macOS/DownKeyCounter/` on disk. Between sessions: close terminals/editors, `mv DownKeyCounter Tachograph`, reopen Claude Code there.
+- **Stale plan doc**: `IMPLEMENTATION_PLAN.md` is fully checked off — archive to `docs/sessions/` or delete.
 
 ---
 *Updated by Claude. Source of truth for project position.*
