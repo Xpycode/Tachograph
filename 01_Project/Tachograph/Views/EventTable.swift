@@ -2,6 +2,12 @@ import SwiftUI
 
 struct EventTable: View {
     let events: [InputEvent]
+    let filterText: String
+
+    init(events: [InputEvent], filterText: String = "") {
+        self.events = events
+        self.filterText = filterText
+    }
 
     private static let displayFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -11,15 +17,23 @@ struct EventTable: View {
         return f
     }()
 
+    private var trimmedQuery: String {
+        filterText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     var body: some View {
         if events.isEmpty {
-            emptyState
+            if trimmedQuery.isEmpty {
+                idleEmptyState
+            } else {
+                filteredEmptyState
+            }
         } else {
             table
         }
     }
 
-    private var emptyState: some View {
+    private var idleEmptyState: some View {
         VStack(spacing: 10) {
             Image(systemName: "keyboard")
                 .font(.system(size: 40))
@@ -28,6 +42,22 @@ struct EventTable: View {
                 .font(.headline)
                 .foregroundStyle(.secondary)
             Text("Events will appear here.")
+                .font(.subheadline)
+                .foregroundStyle(.tertiary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+    }
+
+    private var filteredEmptyState: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 40))
+                .foregroundStyle(.tertiary)
+            Text("No events match '\(trimmedQuery)'.")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            Text("Try a different filter, or clear it.")
                 .font(.subheadline)
                 .foregroundStyle(.tertiary)
         }
@@ -64,7 +94,7 @@ struct EventTable: View {
                 }
                 .width(min: 80, ideal: 80)
             }
-            .onChange(of: events.count) { _, _ in
+            .onChange(of: events.last?.id) { _, _ in
                 guard let lastID = events.last?.id else { return }
                 withAnimation(.easeOut(duration: 0.12)) {
                     proxy.scrollTo(lastID, anchor: .bottom)
@@ -89,5 +119,10 @@ struct EventTable: View {
 
 #Preview("Empty") {
     EventTable(events: [])
+        .frame(width: 600, height: 400)
+}
+
+#Preview("No filter matches") {
+    EventTable(events: [], filterText: "xyz")
         .frame(width: 600, height: 400)
 }
