@@ -22,7 +22,7 @@ struct ContentView: View {
                 }
             }
         }
-        .frame(minWidth: 600, minHeight: 400)
+        .frame(minWidth: 1000, minHeight: 400)
         .task {
             vm.refreshPermission()
         }
