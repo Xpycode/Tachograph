@@ -1,0 +1,68 @@
+import Foundation
+
+/// Pure delimited-text serializer shared by TSV (clipboard) and CSV (file) exports.
+///
+/// Quoting strategy:
+/// - When `quote` is `nil`, fields are emitted verbatim (TSV-compatible — labels with
+///   embedded delimiters are treated as undefined input, matching the original
+///   `ClipboardExporter` contract).
+/// - When `quote` is non-`nil`, a field is wrapped in the quote character iff it
+///   contains the delimiter, the quote character itself, `\n`, or `\r`. Embedded
+///   quotes are escaped by doubling (RFC 4180).
+///
+/// The output never has a trailing line terminator.
+enum DelimitedExporter {
+    static let headerCells: [String] = ["Key / Button", "UTC Time", "Δ (ms)"]
+
+    static func render(
+        events: [InputEvent],
+        delimiter: String,
+        quote: Character?,
+        lineEnding: String
+    ) -> String {
+        let formatter = makeFormatter()
+        var lines: [String] = []
+        lines.reserveCapacity(events.count + 1)
+
+        let headerRow = headerCells
+            .map { encode($0, delimiter: delimiter, quote: quote) }
+            .joined(separator: delimiter)
+        lines.append(headerRow)
+
+        for event in events {
+            let timestamp = formatter.string(from: event.utcTimestamp)
+            let intervalCell = event.intervalMs.map(String.init) ?? ""
+            let cells = [event.label, timestamp, intervalCell]
+                .map { encode($0, delimiter: delimiter, quote: quote) }
+            lines.append(cells.joined(separator: delimiter))
+        }
+
+        return lines.joined(separator: lineEnding)
+    }
+
+    private static func encode(
+        _ field: String,
+        delimiter: String,
+        quote: Character?
+    ) -> String {
+        guard let quote else { return field }
+
+        let quoteString = String(quote)
+        let needsQuoting = field.contains(delimiter)
+            || field.contains(quoteString)
+            || field.contains("\n")
+            || field.contains("\r")
+
+        guard needsQuoting else { return field }
+
+        let escaped = field.replacingOccurrences(of: quoteString, with: quoteString + quoteString)
+        return quoteString + escaped + quoteString
+    }
+
+    private static func makeFormatter() -> ISO8601DateFormatter {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        f.timeZone = TimeZone(identifier: "UTC")
+        return f
+    }
+}

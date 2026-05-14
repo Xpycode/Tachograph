@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Bindable var vm: CaptureViewModel
+    @State private var filterText: String = ""
 
     var body: some View {
         Group {
@@ -9,9 +10,15 @@ struct ContentView: View {
             case .denied:
                 PermissionPanel()
             case .granted:
+                let filtered = EventFilter.filter(events: vm.events, query: filterText)
                 VStack(spacing: 0) {
-                    ControlsToolbar(vm: vm)
-                    EventTable(events: vm.events)
+                    ControlsToolbar(
+                        vm: vm,
+                        filterText: $filterText,
+                        filteredCount: filtered.count,
+                        totalCount: vm.events.count
+                    )
+                    EventTable(events: filtered, filterText: filterText)
                 }
             }
         }

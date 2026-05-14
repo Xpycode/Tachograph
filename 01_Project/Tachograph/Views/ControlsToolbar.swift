@@ -1,7 +1,11 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ControlsToolbar: View {
     @Bindable var vm: CaptureViewModel
+    @Binding var filterText: String
+    let filteredCount: Int
+    let totalCount: Int
     @State private var showClearConfirm = false
     @State private var pulse = false
 
@@ -11,6 +15,8 @@ struct ControlsToolbar: View {
                 startStopButton
                 clearButton
                 copyLogButton
+                saveCSVButton
+                filterField
                 Spacer()
                 statusPill
                 eventCount
@@ -32,6 +38,14 @@ struct ControlsToolbar: View {
         ) {
             Button("Clear", role: .destructive) { vm.clear() }
             Button("Cancel", role: .cancel) {}
+        }
+        .fileExporter(
+            isPresented: $vm.isExporting,
+            document: vm.makeCSVDocument(),
+            contentType: .commaSeparatedText,
+            defaultFilename: vm.defaultExportFilename()
+        ) { result in
+            vm.handleExport(result)
         }
     }
 
@@ -82,6 +96,36 @@ struct ControlsToolbar: View {
         .disabled(vm.events.isEmpty)
     }
 
+    private var saveCSVButton: some View {
+        Button {
+            vm.isExporting = true
+        } label: {
+            Label("Save CSV…", systemImage: "square.and.arrow.down")
+        }
+        .buttonStyle(.bordered)
+        .disabled(vm.events.isEmpty)
+    }
+
+    private var filterField: some View {
+        TextField("Filter…", text: $filterText)
+            .textFieldStyle(.roundedBorder)
+            .font(.subheadline)
+            .frame(minWidth: 140, maxWidth: 220)
+            .overlay(alignment: .trailing) {
+                if !filterText.isEmpty {
+                    Button {
+                        filterText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.trailing, 6)
+                    .accessibilityLabel("Clear filter")
+                }
+            }
+    }
+
     private var statusPill: some View {
         HStack(spacing: 6) {
             Circle()
@@ -113,11 +157,17 @@ struct ControlsToolbar: View {
     }
 
     private var eventCount: some View {
-        Text(vm.events.count.formatted(.number))
-            .font(.system(.subheadline, design: .monospaced))
-            .monospacedDigit()
-            .foregroundStyle(.secondary)
-            .frame(minWidth: 48, alignment: .trailing)
+        Group {
+            if filteredCount != totalCount {
+                Text("\(filteredCount.formatted(.number)) of \(totalCount.formatted(.number))")
+            } else {
+                Text(totalCount.formatted(.number))
+            }
+        }
+        .font(.system(.subheadline, design: .monospaced))
+        .monospacedDigit()
+        .foregroundStyle(.secondary)
+        .frame(minWidth: 48, alignment: .trailing)
     }
 
     private func errorBadge(message: String) -> some View {
@@ -145,13 +195,25 @@ struct ControlsToolbar: View {
 }
 
 #Preview("Idle, empty") {
+    @Previewable @State var filter = ""
     let vm = CaptureViewModel()
-    return ControlsToolbar(vm: vm)
-        .frame(width: 720)
+    return ControlsToolbar(
+        vm: vm,
+        filterText: $filter,
+        filteredCount: 0,
+        totalCount: 0
+    )
+    .frame(width: 720)
 }
 
 #Preview("Capturing") {
+    @Previewable @State var filter = ""
     let vm = CaptureViewModel()
-    return ControlsToolbar(vm: vm)
-        .frame(width: 720)
+    return ControlsToolbar(
+        vm: vm,
+        filterText: $filter,
+        filteredCount: 0,
+        totalCount: 0
+    )
+    .frame(width: 720)
 }
