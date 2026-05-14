@@ -16,6 +16,7 @@
 		6B72238B54FCE614905399C3 /* EventTapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F883F560824F52E85FAD3B /* EventTapService.swift */; };
 		89D597F5D67FB69EF83C122E /* PermissionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F83ADBE71E2BC3359F050 /* PermissionPanel.swift */; };
 		8AEF90F056712C3DD1C114C7 /* CaptureViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F1592A8CEF025FEE23178 /* CaptureViewModelTests.swift */; };
+		95B42D3BE69EF92EB342476C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCC248C3A076DC18DF414AB8 /* Assets.xcassets */; };
 		A2B93FD5BA5356AAEC8342DE /* CanaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD907CBED9EA0D1411F5158B /* CanaryTests.swift */; };
 		B61E46822228323FF1ED3B49 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15971B33023B3F774A42A441 /* InputEvent.swift */; };
 		C6E6519010882DC0448A38D4 /* KeyNameMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E236A788A3B767F121028F2B /* KeyNameMapperTests.swift */; };
@@ -50,6 +51,7 @@
 		A4C81949F8101E80E71A90A6 /* ModifierTapDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTapDetector.swift; sourceTree = "<group>"; };
 		A7235A9DFBB4898313A39A6B /* ModifierTapDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTapDetectorTests.swift; sourceTree = "<group>"; };
 		C32F83ADBE71E2BC3359F050 /* PermissionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPanel.swift; sourceTree = "<group>"; };
+		CCC248C3A076DC18DF414AB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD907CBED9EA0D1411F5158B /* CanaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanaryTests.swift; sourceTree = "<group>"; };
 		E236A788A3B767F121028F2B /* KeyNameMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyNameMapperTests.swift; sourceTree = "<group>"; };
 		E2F7BB9D96F61FA45ED87802 /* ClipboardExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExporterTests.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				53A5162EE692937D9A44EC50 /* Services */,
 				82FB4ECB656D285850A11F40 /* ViewModels */,
 				F307AC78F4A56201700CC941 /* Views */,
+				CCC248C3A076DC18DF414AB8 /* Assets.xcassets */,
 				1991EBEC5FE882FD1754AE1E /* DownKeyCounter.entitlements */,
 				EEBF1458DCED11EAFF7A17BF /* DownKeyCounterApp.swift */,
 			);
@@ -165,6 +168,7 @@
 			buildConfigurationList = 0847CF6A84E39ED059468704 /* Build configuration list for PBXNativeTarget "DownKeyCounter" */;
 			buildPhases = (
 				5F2DFCBE0303D324D33A458B /* Sources */,
+				EBF235874B5527DB40341D07 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -215,6 +219,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EBF235874B5527DB40341D07 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95B42D3BE69EF92EB342476C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		49EF30861A20FFFF7E2BB932 /* Sources */ = {
@@ -411,13 +426,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DownKeyCounter/DownKeyCounter.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = DownKeyCounter;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gregor Müller. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.gmkonsortium.DownKeyCounter;
 				PRODUCT_NAME = DownKeyCounter;
 				SDKROOT = macosx;
@@ -446,13 +463,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DownKeyCounter/DownKeyCounter.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = DownKeyCounter;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gregor Müller. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.gmkonsortium.DownKeyCounter;
 				PRODUCT_NAME = DownKeyCounter;
 				SDKROOT = macosx;

@@ -30,8 +30,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: dev.gmkonsortium.DownKeyCounter
         PRODUCT_NAME: DownKeyCounter
         CODE_SIGN_ENTITLEMENTS: DownKeyCounter/DownKeyCounter.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.utilities
-        INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026"
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Gregor Müller. All rights reserved."
         INFOPLIST_KEY_CFBundleDisplayName: DownKeyCounter
 
   DownKeyCounterTests:
