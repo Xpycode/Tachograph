@@ -1,12 +1,12 @@
 # Decisions Log
 
-This file tracks the WHY behind technical and design decisions for DownKeyCounter.
+This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ---
 
 ## 2026-05-13 — Global capture scope (system-wide, not app-only)
 
-**Context:** The app needs to log keystrokes and clicks for a measurement/timing tool. App-focused capture would only see events while DownKeyCounter has keyboard focus.
+**Context:** The app needs to log keystrokes and clicks for a measurement/timing tool. App-focused capture would only see events while Tachograph has keyboard focus.
 
 **Options considered:**
 1. **App-focused only** — capture via SwiftUI `.onKeyPress` / NSResponder while window is key. No special permissions. Can be sandboxed and MAS-distributable.

@@ -13,7 +13,7 @@ struct PermissionPanel: View {
             Text("Accessibility permission needed")
                 .font(.title2.bold())
 
-            Text("DownKeyCounter watches your input system-wide, so macOS needs your permission.")
+            Text("Tachograph watches your input system-wide, so macOS needs your permission.")
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 420)
@@ -34,7 +34,7 @@ struct PermissionPanel: View {
         .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .confirmationDialog(
-            "Relaunch DownKeyCounter now?",
+            "Relaunch Tachograph now?",
             isPresented: $confirmRelaunch,
             titleVisibility: .visible
         ) {

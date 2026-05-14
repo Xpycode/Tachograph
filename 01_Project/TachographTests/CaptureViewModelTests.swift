@@ -1,5 +1,5 @@
 import XCTest
-@testable import DownKeyCounter
+@testable import Tachograph
 
 final class CaptureViewModelTests: XCTestCase {
     private let base = Date(timeIntervalSince1970: 1_747_164_137.0)

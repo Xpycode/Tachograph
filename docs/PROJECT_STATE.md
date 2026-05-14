@@ -3,7 +3,7 @@
 > **Size limit: <100 lines.** This is a digest, not an archive. Details go in session logs.
 
 ## Identity
-- **Project:** DownKeyCounter
+- **Project:** Tachograph
 - **One-liner:** macOS app that logs global key & mouse events to a live table with clipboard export
 - **Tags:** macos, swiftui, input-monitoring, personal-tool
 - **Started:** 2026-05-13
@@ -19,7 +19,7 @@
 
 | Funnel | Status | Gate |
 |--------|--------|------|
-| **Define** | done | Spec at `specs/down-key-counter.md` reviewed + tightened |
+| **Define** | done | Spec at `specs/tachograph.md` reviewed + tightened |
 | **Plan** | done | `IMPLEMENTATION_PLAN.md` — 7 waves, ~20 atomic tasks |
 | **Build** | done | Waves 1–5 GREEN. Wave 6 functional AC #1–#9, #11 visibly verified; #3/#4/#10 trivial-remaining. |
 | **Ship** | active | Wave 7: icon → archive → notarize → DMG → release |
@@ -60,7 +60,7 @@
 - 2026-05-13: Global capture via CGEventTap, sandbox off, direct distribution only.
 - 2026-05-13: Δ column = inter-event interval (ms), not key-hold duration.
 - 2026-05-13: Session-only log; clipboard is the only data egress.
-- 2026-05-13: Bundle ID `dev.gmkonsortium.DownKeyCounter`.
+- 2026-05-13: Bundle ID `com.lucesumbrarum.Tachograph`.
 
 ## Blockers
 *(none — waiting on user-side icon generation, not a blocker per se)*

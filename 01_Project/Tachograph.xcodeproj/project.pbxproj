@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03AF8B40AD03881F1C209F13 /* CaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E242EE287C20BB9FA915E4 /* CaptureViewModel.swift */; };
+		050B3B434DC9D8555C9FE33A /* ModifierTapDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510A4043614D08FEAFE47EC8 /* ModifierTapDetector.swift */; };
+		0EDA953F93ACC04B0243FD0C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB84E79FA5BCB694C99E1C8 /* ContentView.swift */; };
+		151F26346A6B367D07054EF6 /* ClipboardExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4102249F08A08B9F921C64 /* ClipboardExporterTests.swift */; };
+		2A2C8D59C266890C3142D556 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A525985C04459AEC0B4314 /* InputEvent.swift */; };
+		900D30A8E731617A790FE626 /* ModifierTapDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443DC91ABDCAC3807DD09847 /* ModifierTapDetectorTests.swift */; };
+		9DC9D48A2D708C742C49CD84 /* EventTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */; };
+		A341C049BFAA55A1047523E7 /* KeyNameMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C128CF30B470229BF39814 /* KeyNameMapper.swift */; };
+		A812ED8AF876A184DED16B7F /* CanaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */; };
+		A97AA6199395E3862BD8E716 /* TachographApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409C03974D15E959C2FBE0BB /* TachographApp.swift */; };
+		B2D65C2AAF7F10D1BDD03EDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F25EE251086BB339BBC23F0C /* Assets.xcassets */; };
+		D1CC954AC24F7C12B23927C3 /* ClipboardExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */; };
+		D66D1D8E0FABAA3764A1B71F /* CaptureViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */; };
+		E8B8C86D8B4A103B87F8D4C6 /* PermissionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */; };
+		EAA192F92FDEBB7A77FB7D85 /* EventTapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */; };
+		EBBD5891AC7395D96920A189 /* KeyNameMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F26812EFED533D79FE6D736 /* KeyNameMapperTests.swift */; };
+		ECC9AAA690C65CCEEFB0ECBA /* ControlsToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A097498DD90EF7FF4C313CA0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE699AC5340775868985A0EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 41B68F3CCCDBFAF636AEF5BD;
+			remoteInfo = Tachograph;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07403FB042C3BD00A89024F7 /* TachographTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TachographTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FB84E79FA5BCB694C99E1C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		11A525985C04459AEC0B4314 /* InputEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEvent.swift; sourceTree = "<group>"; };
+		14C128CF30B470229BF39814 /* KeyNameMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyNameMapper.swift; sourceTree = "<group>"; };
+		19E242EE287C20BB9FA915E4 /* CaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModel.swift; sourceTree = "<group>"; };
+		3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsToolbar.swift; sourceTree = "<group>"; };
+		409C03974D15E959C2FBE0BB /* TachographApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TachographApp.swift; sourceTree = "<group>"; };
+		443DC91ABDCAC3807DD09847 /* ModifierTapDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTapDetectorTests.swift; sourceTree = "<group>"; };
+		4A4102249F08A08B9F921C64 /* ClipboardExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExporterTests.swift; sourceTree = "<group>"; };
+		510A4043614D08FEAFE47EC8 /* ModifierTapDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTapDetector.swift; sourceTree = "<group>"; };
+		5F26812EFED533D79FE6D736 /* KeyNameMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyNameMapperTests.swift; sourceTree = "<group>"; };
+		865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanaryTests.swift; sourceTree = "<group>"; };
+		9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTable.swift; sourceTree = "<group>"; };
+		A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTapService.swift; sourceTree = "<group>"; };
+		AFE6002251022FDD7ECF5696 /* Tachograph.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tachograph.entitlements; sourceTree = "<group>"; };
+		B114C098EAC80EE117C3CB11 /* Tachograph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tachograph.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardExporter.swift; sourceTree = "<group>"; };
+		C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPanel.swift; sourceTree = "<group>"; };
+		E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModelTests.swift; sourceTree = "<group>"; };
+		F25EE251086BB339BBC23F0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		09EC8A07FF57B70AA136CBE3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */,
+				A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */,
+				14C128CF30B470229BF39814 /* KeyNameMapper.swift */,
+				510A4043614D08FEAFE47EC8 /* ModifierTapDetector.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2627DDCC62288430402C6AC0 = {
+			isa = PBXGroup;
+			children = (
+				523BDC60641443467B9C563F /* Tachograph */,
+				E55D511F4067B65FB07A928A /* TachographTests */,
+				75A8971C973A8F0FDEE2EF82 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		523BDC60641443467B9C563F /* Tachograph */ = {
+			isa = PBXGroup;
+			children = (
+				CCA9C19DCAA374B62E1CDE10 /* Models */,
+				09EC8A07FF57B70AA136CBE3 /* Services */,
+				FFE29984211DE4D461327530 /* ViewModels */,
+				8D7725C54672E845A6235E74 /* Views */,
+				F25EE251086BB339BBC23F0C /* Assets.xcassets */,
+				AFE6002251022FDD7ECF5696 /* Tachograph.entitlements */,
+				409C03974D15E959C2FBE0BB /* TachographApp.swift */,
+			);
+			path = Tachograph;
+			sourceTree = "<group>";
+		};
+		75A8971C973A8F0FDEE2EF82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B114C098EAC80EE117C3CB11 /* Tachograph.app */,
+				07403FB042C3BD00A89024F7 /* TachographTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D7725C54672E845A6235E74 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0FB84E79FA5BCB694C99E1C8 /* ContentView.swift */,
+				3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */,
+				9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */,
+				C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CCA9C19DCAA374B62E1CDE10 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				11A525985C04459AEC0B4314 /* InputEvent.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E55D511F4067B65FB07A928A /* TachographTests */ = {
+			isa = PBXGroup;
+			children = (
+				865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */,
+				E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */,
+				4A4102249F08A08B9F921C64 /* ClipboardExporterTests.swift */,
+				5F26812EFED533D79FE6D736 /* KeyNameMapperTests.swift */,
+				443DC91ABDCAC3807DD09847 /* ModifierTapDetectorTests.swift */,
+			);
+			path = TachographTests;
+			sourceTree = "<group>";
+		};
+		FFE29984211DE4D461327530 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				19E242EE287C20BB9FA915E4 /* CaptureViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		41B68F3CCCDBFAF636AEF5BD /* Tachograph */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 406907468EBA70D8D76E51AB /* Build configuration list for PBXNativeTarget "Tachograph" */;
+			buildPhases = (
+				A2A7CFC7A56A349D5F910706 /* Sources */,
+				033E50F4AEC92B0CF7B30FBF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tachograph;
+			packageProductDependencies = (
+			);
+			productName = Tachograph;
+			productReference = B114C098EAC80EE117C3CB11 /* Tachograph.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9A200D952FE2B24A89EB491B /* TachographTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55E63A5D52B198E15111CB48 /* Build configuration list for PBXNativeTarget "TachographTests" */;
+			buildPhases = (
+				00B82B63A875D617D2BCF7DD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DC57FB80C229445DE381D177 /* PBXTargetDependency */,
+			);
+			name = TachographTests;
+			packageProductDependencies = (
+			);
+			productName = TachographTests;
+			productReference = 07403FB042C3BD00A89024F7 /* TachographTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE699AC5340775868985A0EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					41B68F3CCCDBFAF636AEF5BD = {
+						DevelopmentTeam = FDMSRXXN73;
+						ProvisioningStyle = Automatic;
+					};
+					9A200D952FE2B24A89EB491B = {
+						DevelopmentTeam = FDMSRXXN73;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 72D7C691C2B3E9D3D5E26534 /* Build configuration list for PBXProject "Tachograph" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2627DDCC62288430402C6AC0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 75A8971C973A8F0FDEE2EF82 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				41B68F3CCCDBFAF636AEF5BD /* Tachograph */,
+				9A200D952FE2B24A89EB491B /* TachographTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		033E50F4AEC92B0CF7B30FBF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2D65C2AAF7F10D1BDD03EDA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00B82B63A875D617D2BCF7DD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A812ED8AF876A184DED16B7F /* CanaryTests.swift in Sources */,
+				D66D1D8E0FABAA3764A1B71F /* CaptureViewModelTests.swift in Sources */,
+				151F26346A6B367D07054EF6 /* ClipboardExporterTests.swift in Sources */,
+				EBBD5891AC7395D96920A189 /* KeyNameMapperTests.swift in Sources */,
+				900D30A8E731617A790FE626 /* ModifierTapDetectorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A2A7CFC7A56A349D5F910706 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03AF8B40AD03881F1C209F13 /* CaptureViewModel.swift in Sources */,
+				D1CC954AC24F7C12B23927C3 /* ClipboardExporter.swift in Sources */,
+				0EDA953F93ACC04B0243FD0C /* ContentView.swift in Sources */,
+				ECC9AAA690C65CCEEFB0ECBA /* ControlsToolbar.swift in Sources */,
+				9DC9D48A2D708C742C49CD84 /* EventTable.swift in Sources */,
+				EAA192F92FDEBB7A77FB7D85 /* EventTapService.swift in Sources */,
+				2A2C8D59C266890C3142D556 /* InputEvent.swift in Sources */,
+				A341C049BFAA55A1047523E7 /* KeyNameMapper.swift in Sources */,
+				050B3B434DC9D8555C9FE33A /* ModifierTapDetector.swift in Sources */,
+				E8B8C86D8B4A103B87F8D4C6 /* PermissionPanel.swift in Sources */,
+				A97AA6199395E3862BD8E716 /* TachographApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DC57FB80C229445DE381D177 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 41B68F3CCCDBFAF636AEF5BD /* Tachograph */;
+			targetProxy = A097498DD90EF7FF4C313CA0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		341A0013B3EFB3E2BD0BE1D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tachograph/Tachograph.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_KEY_CFBundleDisplayName = Tachograph;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gregor Müller. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucesumbrarum.Tachograph;
+				PRODUCT_NAME = Tachograph;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		37E41C7F742AD729F6E5A865 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tachograph/Tachograph.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_KEY_CFBundleDisplayName = Tachograph;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gregor Müller. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucesumbrarum.Tachograph;
+				PRODUCT_NAME = Tachograph;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D007C326DA89083EDCCC249B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = FDMSRXXN73;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		D3B8F8C6E8BDE07CAE826BFF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucesumbrarum.TachographTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tachograph.app/Contents/MacOS/Tachograph";
+			};
+			name = Release;
+		};
+		DFF07B20DCDFCE291EC65190 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = FDMSRXXN73;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		E8175E48576D13B58D1B8703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucesumbrarum.TachographTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tachograph.app/Contents/MacOS/Tachograph";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		406907468EBA70D8D76E51AB /* Build configuration list for PBXNativeTarget "Tachograph" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37E41C7F742AD729F6E5A865 /* Debug */,
+				341A0013B3EFB3E2BD0BE1D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		55E63A5D52B198E15111CB48 /* Build configuration list for PBXNativeTarget "TachographTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E8175E48576D13B58D1B8703 /* Debug */,
+				D3B8F8C6E8BDE07CAE826BFF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		72D7C691C2B3E9D3D5E26534 /* Build configuration list for PBXProject "Tachograph" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFF07B20DCDFCE291EC65190 /* Debug */,
+				D007C326DA89083EDCCC249B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE699AC5340775868985A0EB /* Project object */;
+}

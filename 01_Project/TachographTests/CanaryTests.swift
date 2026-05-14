@@ -1,5 +1,5 @@
 import XCTest
-@testable import DownKeyCounter
+@testable import Tachograph
 
 final class CanaryTests: XCTestCase {
     func testCanary() {

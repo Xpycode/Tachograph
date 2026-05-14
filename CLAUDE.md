@@ -1,4 +1,4 @@
-# DownKeyCounter
+# Tachograph
 
 A macOS app that logs every key press and mouse click globally with timing data, displayed in a modern table view with one-click clipboard export.
 
@@ -17,7 +17,7 @@ A macOS app that logs every key press and mouse click globally with timing data,
 | Sandbox | **Off** (required for global event monitoring) |
 | Permissions | Accessibility (System Settings → Privacy & Security → Accessibility) |
 | Audience | Personal use; may share via GitHub |
-| Bundle ID | `dev.gmkonsortium.DownKeyCounter` |
+| Bundle ID | `com.lucesumbrarum.Tachograph` |
 
 ---
 
@@ -47,8 +47,8 @@ A macOS app that logs every key press and mouse click globally with timing data,
 ## Architecture
 
 ```
-01_Project/DownKeyCounter/
-├── DownKeyCounterApp.swift           # @main entry
+01_Project/Tachograph/
+├── TachographApp.swift           # @main entry
 ├── Models/
 │   └── InputEvent.swift              # struct: id, kind, label, utc, intervalMs
 ├── ViewModels/
@@ -101,16 +101,16 @@ Folder layout at repo root follows Directions:
 
 ```bash
 # Build (Debug)
-xcodebuild -project 01_Project/DownKeyCounter.xcodeproj \
-           -scheme DownKeyCounter -configuration Debug build
+xcodebuild -project 01_Project/Tachograph.xcodeproj \
+           -scheme Tachograph -configuration Debug build
 
 # Clean + Build (preferred per global rules)
-killall DownKeyCounter 2>/dev/null || true
-xcodebuild -project 01_Project/DownKeyCounter.xcodeproj \
-           -scheme DownKeyCounter clean build
+killall Tachograph 2>/dev/null || true
+xcodebuild -project 01_Project/Tachograph.xcodeproj \
+           -scheme Tachograph clean build
 
 # Run
-open ~/Library/Developer/Xcode/DerivedData/DownKeyCounter-*/Build/Products/Debug/DownKeyCounter.app
+open ~/Library/Developer/Xcode/DerivedData/Tachograph-*/Build/Products/Debug/Tachograph.app
 ```
 
 ---
@@ -119,7 +119,7 @@ open ~/Library/Developer/Xcode/DerivedData/DownKeyCounter-*/Build/Products/Debug
 
 `project.yml` uses `DEVELOPMENT_TEAM=FDMSRXXN73` (the real team ID from the cert's OU, not the H56HM4MMZS suffix in its CN) + `CODE_SIGN_STYLE=Automatic`. This produces a stable Designated Requirement so macOS TCC keeps the Accessibility grant across rebuilds. Don't revert to "Sign to Run Locally" unless you want the re-grant dance back.
 
-When something goes wrong with the grant, `tccutil reset Accessibility dev.gmkonsortium.DownKeyCounter` clears it and you re-grant once.
+When something goes wrong with the grant, `tccutil reset Accessibility com.lucesumbrarum.Tachograph` clears it and you re-grant once.
 
 ## Known Constraints
 

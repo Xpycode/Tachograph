@@ -1,7 +1,7 @@
 import Carbon.HIToolbox
 import CoreGraphics
 import XCTest
-@testable import DownKeyCounter
+@testable import Tachograph
 
 final class KeyNameMapperTests: XCTestCase {
     func testPlainLetter() {
