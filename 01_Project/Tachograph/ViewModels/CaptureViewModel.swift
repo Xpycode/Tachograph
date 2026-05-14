@@ -107,6 +107,12 @@ final class CaptureViewModel {
         lastTimestamp = nil
     }
 
+    /// Surface a user-visible error from auxiliary UI (e.g., the SettingsView
+    /// app picker) through the existing toolbar error badge.
+    func surfaceError(_ message: String) {
+        lastError = message
+    }
+
     func copyLog() {
         ClipboardExporter.copyToPasteboard(events)
     }

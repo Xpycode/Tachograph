@@ -39,5 +39,6 @@ struct TachographApp: App {
         Settings {
             SettingsView(store: store, vm: vm)
         }
+        .windowResizability(.contentSize)
     }
 }

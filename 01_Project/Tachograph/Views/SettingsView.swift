@@ -38,14 +38,19 @@ struct SettingsView: View {
                         vm?.updateActiveFilter()
                     }
 
-                if store.enabled {
-                    allowedAppsList
-                    addAppButton
-                    Toggle("Include Tachograph itself", isOn: $store.captureOwnApp)
-                        .onChange(of: store.captureOwnApp) { _, _ in
-                            vm?.updateActiveFilter()
-                        }
-                }
+                // Always render the rows so the window's intrinsic height
+                // doesn't change on toggle — Settings scenes only auto-size
+                // on first appear, otherwise you get either a stale scrollbar
+                // (content shrunk) or content clipping (content grew).
+                allowedAppsList
+                    .disabled(!store.enabled)
+                addAppButton
+                    .disabled(!store.enabled)
+                Toggle("Include Tachograph itself", isOn: $store.captureOwnApp)
+                    .disabled(!store.enabled)
+                    .onChange(of: store.captureOwnApp) { _, _ in
+                        vm?.updateActiveFilter()
+                    }
             } header: {
                 Text("App Filter")
             } footer: {
@@ -107,16 +112,33 @@ struct SettingsView: View {
         panel.allowedContentTypes = [.application]
         panel.prompt = "Add"
         panel.message = "Choose an app to add to the capture filter"
-
-        // Default to /Applications to short-circuit the user.
         panel.directoryURL = URL(fileURLWithPath: "/Applications")
 
         guard panel.runModal() == .OK, let url = panel.url else { return }
-        // Resolve symlinks/aliases — NSOpenPanel may hand back an alias.
+
+        if let bundleID = Self.bundleIdentifier(for: url) {
+            store.addBundleID(bundleID)
+            vm?.updateActiveFilter()
+        } else {
+            vm?.surfaceError("Couldn't read bundle ID for \(url.lastPathComponent)")
+        }
+    }
+
+    /// Tries several strategies to extract a bundle ID from a user-picked URL.
+    /// `Bundle(url:)` returns nil for aliases, symlinked locations, or apps the
+    /// process can't resolve via Launch Services — falling back to a direct
+    /// Info.plist read covers all observed cases.
+    private static func bundleIdentifier(for url: URL) -> String? {
+        if let id = Bundle(url: url)?.bundleIdentifier { return id }
         let resolved = url.resolvingSymlinksInPath()
-        guard let bundleID = Bundle(url: resolved)?.bundleIdentifier else { return }
-        store.addBundleID(bundleID)
-        vm?.updateActiveFilter()
+        if let id = Bundle(url: resolved)?.bundleIdentifier { return id }
+        let plistURL = resolved.appendingPathComponent("Contents/Info.plist")
+        if let data = try? Data(contentsOf: plistURL),
+           let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
+           let id = plist["CFBundleIdentifier"] as? String {
+            return id
+        }
+        return nil
     }
 
     private func displayName(for bundleID: String) -> String {
