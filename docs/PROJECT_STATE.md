@@ -9,10 +9,10 @@
 - **Started:** 2026-05-13
 
 ## Current Position
-- **Funnel:** **v2 planning complete** — v1.0.0 shipped, v2 spec drafted
-- **Phase:** v2 plan ready; awaiting user approval to begin Wave 1
-- **Focus:** Wave 1 implementation (CSV export + filter/search, parallel, S complexity)
-- **Status:** planning done — `docs/specs/v2-features.md` written, 4 cross-feature decisions logged as PENDING
+- **Funnel:** **v2 Wave 1 complete** — CSV export + filter/search shipped on `feature/v2-wave1`
+- **Phase:** Wave 1 implementation done, awaiting merge + Wave 2 (Settings + hotkey) start
+- **Focus:** Merge `feature/v2-wave1` → main, then start Wave 2 (W2-A hotkey, requires SPM dep)
+- **Status:** build green, 60+ tests passing (added 11 in W1-A + 8 in W1-B), UI verified in running app
 - **Last updated:** 2026-05-14
 
 ## Funnel Progress
@@ -22,18 +22,18 @@
 | **v1 Define → Ship** | done | v1.0.0 notarized + published |
 | **v2 Define** | done | Spec at `specs/v2-features.md` — 6 features, 3 waves |
 | **v2 Plan** | done | Phased plan + cross-feature decisions logged as PENDING |
-| **v2 Build** | not started | Awaiting user approval to start Wave 1 |
+| **v2 Build** | wave 1 done | W1-A CSV + W1-B filter shipped on `feature/v2-wave1` |
 | **v2 Ship** | not started | — |
 
 ## v2 Wave Progress
 ```
-[####################........................] v2 plan complete; Wave 1 ready to start
+[##############################..............] Wave 1 done; Wave 2 ready
 ```
 
 | Wave | Status | Features | Complexity |
 |------|--------|----------|------------|
-| W1 (parallel) | ready | CSV export + filter/search | S + S |
-| W2 (sequential) | blocked | hotkey → per-app filter | S + S/M |
+| W1 (parallel) | ✅ done | CSV export + filter/search | S + S |
+| W2 (sequential) | ready | hotkey → per-app filter | S + S/M |
 | W3 (sequential) | blocked | key-hold duration → heat-map | M + M |
 
 ## Readiness
@@ -50,7 +50,9 @@
 ## Validation Gates
 - [x] **v1 Define → Plan → Build → Ship** (all complete 2026-05-14)
 - [x] **v2 Define → Plan** (spec + phased plan complete)
-- [ ] **v2 Plan → Build** — gated on user approval of 4 cross-feature decisions
+- [x] **v2 Wave 1 Build** — W1-A + W1-B on `feature/v2-wave1`, build green, tests green, UI verified
+- [ ] **v2 Wave 1 Merge → main**
+- [ ] **v2 Wave 2 Build** (W2-A hotkey + W2-B per-app filter)
 
 ## Active Decisions
 
@@ -67,16 +69,15 @@
 - 2026-05-13: macOS 15 Sequoia minimum; global capture via CGEventTap; sandbox off; session-only log.
 
 ## Blockers
-*(none — Wave 1 ready to start on user approval)*
+*(none — Wave 1 done, Wave 2 needs SPM dep + Settings scene; see CFD-1/CFD-2)*
 
 ## Resume
 
-**v2 planning complete; awaiting user signoff to begin Wave 1.**
+**Wave 1 complete on `feature/v2-wave1` (commits 80dd9c5 docs, 0dd79fc W1-A, 6182612 W1-B).**
 
-- **If approving:** start **Wave 1** — CSV export (`W1-A`) + filter/search (`W1-B`) in parallel. Both S complexity, isolated to UI + exporter layers, no capture-pipeline risk.
-- **If reshaping:** revisit cross-feature decisions in `decisions.md` (CFD-1..4) or per-feature shape in `docs/specs/v2-features.md`.
+- **Next:** review the branch, merge to main, then start **Wave 2** — W2-A hotkey first (needs `sindresorhus/KeyboardShortcuts` SPM dep, first 3rd-party dep — adds it to `project.yml`), then W2-B per-app filter on the shared `SettingsView`.
+- **Wave 1 details:** 19 new tests (11 CSV/delimiter + 8 filter), `DelimitedExporter` extracted so TSV stays byte-identical, filter state lives in ContentView per spec, `.fileExporter` two-way-binds via stored `var isExporting` on the VM.
 - **Folder rename housekeeping**: repo folder is still `1-macOS/DownKeyCounter/` on disk. Between sessions: close terminals/editors, `mv DownKeyCounter Tachograph`, reopen Claude Code there.
-- **Stale plan doc**: `IMPLEMENTATION_PLAN.md` from v1 is fully checked off — archive or delete before v2 planning artifacts proliferate.
 
 ---
 *Updated by Claude. Source of truth for project position.*
