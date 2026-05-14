@@ -53,6 +53,8 @@
 - [ ] **Build → Ship**: Awaiting notarized DMG + clean-install verification (AC #12)
 
 ## Active Decisions
+- 2026-05-14: Renamed `DownKeyCounter` → **Tachograph**. Reason: name now matches function (records input timing) rather than describing implementation (keyDown events). Atomic rename via `rename/to-tachograph` branch; 44 tests still pass; git tracks file history at 82–100% similarity.
+- 2026-05-14: Bundle ID prefix corrected to `com.lucesumbrarum` per `apple-developer.md` primary prefix. Final bundle id: `com.lucesumbrarum.Tachograph`. Earlier `dev.gmkonsortium.*` was synthesized from email — wrong.
 - 2026-05-14: Dev builds signed with Apple Development cert (Team ID `FDMSRXXN73`) instead of ad-hoc, so TCC Accessibility grants survive rebuilds. Gotcha logged: team ID is the cert's `OU` field, not the suffix in its CN.
 - 2026-05-14: User will handle Archive + Notarize inside Xcode Organizer; Claude handles icon pipeline + DMG + release.
 - 2026-05-14: `EventTapService` is `@MainActor final class`, not `actor`, to avoid Task-hop reordering of CGEventTap callbacks (see `decisions.md`).
@@ -60,13 +62,16 @@
 - 2026-05-13: Global capture via CGEventTap, sandbox off, direct distribution only.
 - 2026-05-13: Δ column = inter-event interval (ms), not key-hold duration.
 - 2026-05-13: Session-only log; clipboard is the only data egress.
-- 2026-05-13: Bundle ID `com.lucesumbrarum.Tachograph`.
 
 ## Blockers
-*(none — waiting on user-side icon generation, not a blocker per se)*
+*(none)*
 
 ## Resume
-**Next step on resume:** Check whether `02_Design/AppIcon-1024.png` exists. If yes → run the appiconset pipeline + wire into XcodeGen. If no → ping user about Kling AI status.
+**Next steps on resume:**
+1. User: re-grant Accessibility for `com.lucesumbrarum.Tachograph` (one-time after the rename — new bundle id, fresh TCC entry).
+2. User: Product → Archive in Xcode (scheme `Tachograph`) → Distribute App → Developer ID → Notarize. Export the notarized `.app` to `04_Exports/v1.0.0/`.
+3. Claude: package signed DMG via `hdiutil`, draft GitHub v1.0.0 release notes, verify mount + first-launch on a clean account if available.
+4. (Optional follow-up) User: rename repo folder `1-macOS/DownKeyCounter/` → `1-macOS/Tachograph/` between sessions to match.
 
 ---
 *Updated by Claude. Source of truth for project position.*
