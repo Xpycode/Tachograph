@@ -14,4 +14,3 @@ Things parked from v1 spec — not now, maybe later.
 | Menu bar mode | Optional `MenuBarExtra` companion for quick start/stop. |
 | Sound on key press (toggle) | Click-clack typewriter feedback. Probably no, but it's an idea. |
 | Auto-clear after N minutes | Privacy-friendly: discard rows older than X automatically while capturing. |
-| Self-relaunch helper | Current "I've granted it — relaunch" button calls `terminate(nil)` and the user has to reopen the app manually. Could replace with a `Process` that re-execs the bundle after a brief delay. ~10 LOC, no deps. Discovered 2026-05-14. |

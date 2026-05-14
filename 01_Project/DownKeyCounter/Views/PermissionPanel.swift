@@ -39,7 +39,7 @@ struct PermissionPanel: View {
             titleVisibility: .visible
         ) {
             Button("Relaunch", role: .destructive) {
-                NSApplication.shared.terminate(nil)
+                relaunchApp()
             }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -51,6 +51,15 @@ struct PermissionPanel: View {
         if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
             NSWorkspace.shared.open(url)
         }
+    }
+
+    private func relaunchApp() {
+        let bundleURL = Bundle.main.bundleURL
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        task.arguments = ["-n", bundleURL.path]
+        try? task.run()
+        NSApp.terminate(nil)
     }
 }
 
