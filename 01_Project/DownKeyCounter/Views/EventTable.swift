@@ -56,7 +56,7 @@ struct EventTable: View {
                 TableColumn("Δ (ms)") { event in
                     HStack {
                         Spacer()
-                        Text(event.intervalMs.map { "\($0)" } ?? "—")
+                        Text(verbatim: event.intervalMs.map { $0.formatted(.number.grouping(.never)) } ?? "—")
                             .font(.system(.body, design: .monospaced))
                             .monospacedDigit()
                             .foregroundStyle(event.intervalMs == nil ? .tertiary : .primary)

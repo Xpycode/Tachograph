@@ -115,6 +115,12 @@ open ~/Library/Developer/Xcode/DerivedData/DownKeyCounter-*/Build/Products/Debug
 
 ---
 
+## Dev signing
+
+`project.yml` uses `DEVELOPMENT_TEAM=FDMSRXXN73` (the real team ID from the cert's OU, not the H56HM4MMZS suffix in its CN) + `CODE_SIGN_STYLE=Automatic`. This produces a stable Designated Requirement so macOS TCC keeps the Accessibility grant across rebuilds. Don't revert to "Sign to Run Locally" unless you want the re-grant dance back.
+
+When something goes wrong with the grant, `tccutil reset Accessibility dev.gmkonsortium.DownKeyCounter` clears it and you re-grant once.
+
 ## Known Constraints
 
 - `CGEventTap` only works when the host process is trusted in Accessibility. After granting, **the app must be relaunched** — macOS does not hot-swap that grant.
