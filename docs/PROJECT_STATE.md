@@ -27,14 +27,14 @@
 
 ## v2 Wave Progress
 ```
-[#########################################...] Wave 2 done; Wave 3 ready
+[#########################################...] Wave 2 done; Wave 3 ready (3 features)
 ```
 
 | Wave | Status | Features | Complexity |
 |------|--------|----------|------------|
 | W1 (parallel) | ✅ done | CSV export + filter/search | S + S |
 | W2 (sequential) | ✅ done | hotkey → per-app filter → app context column | S + S/M + S |
-| W3 (sequential) | ready | key-hold duration → heat-map | M + M |
+| W3 (sequential) | ready | key-hold → heat-map → mouse coords + AX element | M + M + M |
 
 ## Readiness
 
@@ -74,11 +74,12 @@
 
 ## Resume
 
-**Wave 2 complete on `feature/v2-wave2` (W2-A hotkey, W2-B per-app filter, W2-C app context column, plus polish + decisions ratification commits).**
+**Waves 1 + 2 merged to main. Wave 3 plan extended with W3-C; ready to start.**
 
-- **Next:** merge `feature/v2-wave2` to main, then start **Wave 3** — W3-A key-hold first (changes the AsyncStream payload from `InputEvent` to `EventTapMessage` per CFD-3), then W3-B heat-map view.
-- **Wave 2 details:** 19 new tests (8 toggle + 11 AppFilter + new app-cell test). KeyboardShortcuts 2.4.0 SPM dep added. FrontmostAppMonitor caches frontmost via `nonisolated(unsafe)` so the C callback gates on a single pointer compare. App context (bundle ID) stamped on every event, surfaced as a 4th table column and TSV/CSV column.
-- **Folder rename housekeeping**: repo folder is still `1-macOS/DownKeyCounter/` on disk. Between sessions: close terminals/editors, `mv DownKeyCounter Tachograph`, reopen Claude Code there.
+- **Next:** create `feature/v2-wave3`, then **W3-A key-hold** first (reshapes `AsyncStream<InputEvent>` → `AsyncStream<EventTapMessage>` per CFD-3; superseding-decisions entry for CFD-4 lands with this), then **W3-B heat-map** (Charts views over filtered events), then **W3-C mouse coords + AX element label** (piggybacks on W3-A's pair-and-patch stream; uses existing Accessibility TCC bucket — NOT Screen Recording).
+- **W3-C plan added** at `docs/specs/v2-features.md` lines ~239–305. Doc only, no code yet. CFD-3-style structure (recommendation, why-not-alternatives, schema diff, files touched, gotchas).
+- **Wave 2 details:** 19 new tests, KeyboardShortcuts 2.4.0 SPM dep, FrontmostAppMonitor with `nonisolated(unsafe)` cache, per-event app context stamped from a single read so filter and event row agree. CFD-1/2/3 ratified.
+- **Folder rename housekeeping:** repo folder is still `1-macOS/DownKeyCounter/` on disk. Between sessions: close terminals/editors, `mv DownKeyCounter Tachograph`, reopen Claude Code there.
 
 ---
 *Updated by Claude. Source of truth for project position.*
