@@ -105,9 +105,9 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ---
 
-## 2026-05-14 — v2: Single Settings scene shared across features [PENDING]
+## 2026-05-14 — v2: Single Settings scene shared across features [RATIFIED]
 
-**Status:** pending — finalize on Wave 2 landing.
+**Status:** ratified 2026-05-15 — Wave 2 landed (W2-A added the Hotkey section, W2-B the App Filter section in the same `SettingsView.swift`).
 
 **Context:** Both *Pause/resume hotkey* (W2-A) and *Per-app filter* (W2-B) need a place to live. Two independent windows would be wasteful and SwiftUI's `Settings { }` scene is the standard macOS pattern.
 
@@ -119,9 +119,9 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ---
 
-## 2026-05-14 — v2: Adopt `sindresorhus/KeyboardShortcuts` SPM dependency [PENDING]
+## 2026-05-14 — v2: Adopt `sindresorhus/KeyboardShortcuts` SPM dependency [RATIFIED]
 
-**Status:** pending — first 3rd-party dep in the project.
+**Status:** ratified 2026-05-15 — landed in W2-A. SPM resolved `KeyboardShortcuts 2.4.0`. `Package.resolved` joined source control via `xcodegen` regen. Default combo `⌃⌥⌘R` registered in `Models/HotkeyName.swift`; toolbar shows the live shortcut via `.help()` tooltip on Start/Stop.
 
 **Context:** W2-A (pause/resume hotkey) needs a global hotkey that *consumes* the event (so it doesn't leak to the focused app). Options compared:
 
@@ -143,9 +143,9 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ---
 
-## 2026-05-14 — v2: Event-tap stream type changes only in Wave 3 [PENDING]
+## 2026-05-14 — v2: Event-tap stream type changes only in Wave 3 [RATIFIED]
 
-**Status:** pending — applies when W3-A lands.
+**Status:** ratified 2026-05-15 — W2-B landed without touching the stream shape. `AsyncStream<InputEvent>` still in use; per-app filter is a single membership-check guard before `yield(...)` in `EventTapService.handle`. Stream-type refactor to `AsyncStream<EventTapMessage>` deferred to W3-A as planned.
 
 **Context:** W3-A (key-hold duration) needs the service to emit two kinds of messages: append-row and update-row-by-id. Today the service yields `AsyncStream<InputEvent>`. W2-B (per-app filter) also touches the service, but only to gate `yield(...)` on bundle-ID membership.
 

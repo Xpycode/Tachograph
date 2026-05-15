@@ -75,6 +75,16 @@ struct EventTable: View {
                 }
                 .width(min: 140)
 
+                TableColumn("App") { event in
+                    Text(AppDisplayNameLookup.displayName(for: event.bundleID) ?? "—")
+                        .font(.system(.body, design: .monospaced))
+                        .foregroundStyle(event.bundleID == nil ? .tertiary : .primary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .help(event.bundleID ?? "")
+                }
+                .width(min: 120, ideal: 160)
+
                 TableColumn("UTC Time") { event in
                     Text(Self.displayFormatter.string(from: event.utcTimestamp))
                         .font(.system(.body, design: .monospaced))

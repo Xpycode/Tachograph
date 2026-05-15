@@ -1,8 +1,10 @@
 import SwiftUI
 import UniformTypeIdentifiers
+import KeyboardShortcuts
 
 struct ControlsToolbar: View {
     @Bindable var vm: CaptureViewModel
+    @Bindable var store: AppFilterStore
     @Binding var filterText: String
     let filteredCount: Int
     let totalCount: Int
@@ -18,6 +20,8 @@ struct ControlsToolbar: View {
                 saveCSVButton
                 filterField
                 Spacer()
+                appFilterIndicator
+                settingsLinkButton
                 statusPill
                 eventCount
             }
@@ -70,6 +74,17 @@ struct ControlsToolbar: View {
                 .tint(.red)
             }
         }
+        .help(toggleHotkeyHint)
+    }
+
+    /// Tooltip shown on hover for the Start/Stop button. Pulled from the live
+    /// `KeyboardShortcuts` binding so it reflects user customisation made in
+    /// the Settings scene. Falls back gracefully when no shortcut is set.
+    private var toggleHotkeyHint: String {
+        if let shortcut = KeyboardShortcuts.getShortcut(for: .toggleCapture) {
+            return "Toggle capture (\(shortcut))"
+        }
+        return "Toggle capture (no hotkey set)"
     }
 
     private var clearButton: some View {
@@ -156,6 +171,35 @@ struct ControlsToolbar: View {
         }
     }
 
+    /// Compact "N apps" pill — only renders when the filter is active AND has
+    /// at least one app. Sits left of the gear so it visually belongs to the
+    /// Settings affordance, with the right-side area reserved for the status
+    /// pill + event count.
+    @ViewBuilder
+    private var appFilterIndicator: some View {
+        if store.enabled && !store.allowedBundleIDs.isEmpty {
+            Label("\(store.allowedBundleIDs.count) apps", systemImage: "app.badge.checkmark")
+                .labelStyle(.titleAndIcon)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Capsule().fill(.quaternary.opacity(0.5)))
+                .help("Capture is gated to \(store.allowedBundleIDs.count) app(s). Edit in Settings.")
+        }
+    }
+
+    /// `SettingsLink` is the macOS 14+ way to open the Settings scene with a
+    /// single click — no menu plumbing, no AppKit shim. Falls back gracefully
+    /// on older OSes (not relevant: project min is macOS 15).
+    private var settingsLinkButton: some View {
+        SettingsLink {
+            Image(systemName: "gear")
+        }
+        .buttonStyle(.borderless)
+        .help("Open Settings")
+    }
+
     private var eventCount: some View {
         Group {
             if filteredCount != totalCount {
@@ -199,6 +243,7 @@ struct ControlsToolbar: View {
     let vm = CaptureViewModel()
     return ControlsToolbar(
         vm: vm,
+        store: vm.store,
         filterText: $filter,
         filteredCount: 0,
         totalCount: 0
@@ -211,6 +256,7 @@ struct ControlsToolbar: View {
     let vm = CaptureViewModel()
     return ControlsToolbar(
         vm: vm,
+        store: vm.store,
         filterText: $filter,
         filteredCount: 0,
         totalCount: 0

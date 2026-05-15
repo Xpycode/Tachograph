@@ -9,11 +9,11 @@
 - **Started:** 2026-05-13
 
 ## Current Position
-- **Funnel:** **v2 Wave 1 complete** — CSV export + filter/search shipped on `feature/v2-wave1`
-- **Phase:** Wave 1 implementation done, awaiting merge + Wave 2 (Settings + hotkey) start
-- **Focus:** Merge `feature/v2-wave1` → main, then start Wave 2 (W2-A hotkey, requires SPM dep)
-- **Status:** build green, 60+ tests passing (added 11 in W1-A + 8 in W1-B), UI verified in running app
-- **Last updated:** 2026-05-14
+- **Funnel:** **v2 Wave 2 complete** — W2-A hotkey, W2-B per-app filter, W2-C app column shipped on `feature/v2-wave2`
+- **Phase:** Wave 2 done, awaiting merge + Wave 3 (key-hold + heat-map) start
+- **Focus:** Merge `feature/v2-wave2` → main, then start Wave 3 (W3-A key-hold; reshapes the event-tap stream)
+- **Status:** build green, all tests passing, UI verified (toolbar gear, Settings sections, App column live); CFD-1/2/3 ratified
+- **Last updated:** 2026-05-15
 
 ## Funnel Progress
 
@@ -21,20 +21,20 @@
 |--------|--------|------|
 | **v1 Define → Ship** | done | v1.0.0 notarized + published |
 | **v2 Define** | done | Spec at `specs/v2-features.md` — 6 features, 3 waves |
-| **v2 Plan** | done | Phased plan + cross-feature decisions logged as PENDING |
-| **v2 Build** | wave 1 done | W1-A CSV + W1-B filter shipped on `feature/v2-wave1` |
+| **v2 Plan** | done | Phased plan + cross-feature decisions ratified through CFD-3 |
+| **v2 Build** | waves 1-2 done | W1 (merged), W2 (W2-A + W2-B + W2-C) on `feature/v2-wave2` ready to merge |
 | **v2 Ship** | not started | — |
 
 ## v2 Wave Progress
 ```
-[##############################..............] Wave 1 done; Wave 2 ready
+[#########################################...] Wave 2 done; Wave 3 ready
 ```
 
 | Wave | Status | Features | Complexity |
 |------|--------|----------|------------|
 | W1 (parallel) | ✅ done | CSV export + filter/search | S + S |
-| W2 (sequential) | ready | hotkey → per-app filter | S + S/M |
-| W3 (sequential) | blocked | key-hold duration → heat-map | M + M |
+| W2 (sequential) | ✅ done | hotkey → per-app filter → app context column | S + S/M + S |
+| W3 (sequential) | ready | key-hold duration → heat-map | M + M |
 
 ## Readiness
 
@@ -50,9 +50,10 @@
 ## Validation Gates
 - [x] **v1 Define → Plan → Build → Ship** (all complete 2026-05-14)
 - [x] **v2 Define → Plan** (spec + phased plan complete)
-- [x] **v2 Wave 1 Build** — W1-A + W1-B on `feature/v2-wave1`, build green, tests green, UI verified
-- [ ] **v2 Wave 1 Merge → main**
-- [ ] **v2 Wave 2 Build** (W2-A hotkey + W2-B per-app filter)
+- [x] **v2 Wave 1 Build + Merge** — W1-A + W1-B merged 2026-05-14
+- [x] **v2 Wave 2 Build** — W2-A + W2-B + W2-C on `feature/v2-wave2`, all tests green, UI verified
+- [ ] **v2 Wave 2 Merge → main**
+- [ ] **v2 Wave 3 Build** (W3-A key-hold + W3-B heat-map)
 
 ## Active Decisions
 
@@ -69,14 +70,14 @@
 - 2026-05-13: macOS 15 Sequoia minimum; global capture via CGEventTap; sandbox off; session-only log.
 
 ## Blockers
-*(none — Wave 1 done, Wave 2 needs SPM dep + Settings scene; see CFD-1/CFD-2)*
+*(none — Wave 2 done, Wave 3 reshapes the event-tap stream; CFD-3 already drafted)*
 
 ## Resume
 
-**Wave 1 complete on `feature/v2-wave1` (commits 80dd9c5 docs, 0dd79fc W1-A, 6182612 W1-B).**
+**Wave 2 complete on `feature/v2-wave2` (W2-A hotkey, W2-B per-app filter, W2-C app context column, plus polish + decisions ratification commits).**
 
-- **Next:** review the branch, merge to main, then start **Wave 2** — W2-A hotkey first (needs `sindresorhus/KeyboardShortcuts` SPM dep, first 3rd-party dep — adds it to `project.yml`), then W2-B per-app filter on the shared `SettingsView`.
-- **Wave 1 details:** 19 new tests (11 CSV/delimiter + 8 filter), `DelimitedExporter` extracted so TSV stays byte-identical, filter state lives in ContentView per spec, `.fileExporter` two-way-binds via stored `var isExporting` on the VM.
+- **Next:** merge `feature/v2-wave2` to main, then start **Wave 3** — W3-A key-hold first (changes the AsyncStream payload from `InputEvent` to `EventTapMessage` per CFD-3), then W3-B heat-map view.
+- **Wave 2 details:** 19 new tests (8 toggle + 11 AppFilter + new app-cell test). KeyboardShortcuts 2.4.0 SPM dep added. FrontmostAppMonitor caches frontmost via `nonisolated(unsafe)` so the C callback gates on a single pointer compare. App context (bundle ID) stamped on every event, surfaced as a 4th table column and TSV/CSV column.
 - **Folder rename housekeeping**: repo folder is still `1-macOS/DownKeyCounter/` on disk. Between sessions: close terminals/editors, `mv DownKeyCounter Tachograph`, reopen Claude Code there.
 
 ---

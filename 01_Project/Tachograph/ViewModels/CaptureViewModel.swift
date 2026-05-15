@@ -17,11 +17,25 @@ final class CaptureViewModel {
     var isExporting: Bool = false
 
     private let service: EventTapService
+    private let monitor: FrontmostAppMonitor
+    let store: AppFilterStore
     private var consumeTask: Task<Void, Never>?
     private var lastTimestamp: Date?
 
-    init(service: EventTapService = EventTapService()) {
-        self.service = service
+    /// Defaults construct a fresh `FrontmostAppMonitor` + `AppFilterStore` so
+    /// existing call-sites (tests, previews) keep working unchanged. Production
+    /// wires shared instances through `TachographApp` so the toolbar and
+    /// Settings scene see the same store.
+    init(
+        service: EventTapService? = nil,
+        monitor: FrontmostAppMonitor = FrontmostAppMonitor(),
+        store: AppFilterStore = AppFilterStore()
+    ) {
+        self.monitor = monitor
+        self.store = store
+        // EventTapService needs the monitor for its filter check, so when no
+        // service is injected we construct one against the same monitor.
+        self.service = service ?? EventTapService(monitor: monitor)
     }
 
     func refreshPermission() {
@@ -31,6 +45,9 @@ final class CaptureViewModel {
     func start() {
         guard permissionState == .granted, status != .capturing else { return }
         lastError = nil
+        // Push the current filter snapshot into the service BEFORE start() so
+        // the very first event is gated correctly.
+        pushFilterSnapshot()
         let stream: AsyncStream<InputEvent>
         do {
             stream = try service.start()
@@ -47,6 +64,19 @@ final class CaptureViewModel {
         }
     }
 
+    /// Called by `SettingsView` after the user edits the allow-list while
+    /// capture is running, so the running tap sees the new rules without a
+    /// stop/start cycle.
+    func updateActiveFilter() {
+        guard status == .capturing else { return }
+        pushFilterSnapshot()
+    }
+
+    private func pushFilterSnapshot() {
+        let ownID = Bundle.main.bundleIdentifier ?? ""
+        service.updateFilterSnapshot(store.makeSnapshot(ownBundleID: ownID))
+    }
+
     func stop() {
         consumeTask?.cancel()
         consumeTask = nil
@@ -54,9 +84,33 @@ final class CaptureViewModel {
         status = .idle
     }
 
+    /// Toggles capture state. Invoked by the global hotkey as well as any
+    /// future programmatic callers. Refreshes accessibility permission first
+    /// so a denied state surfaces the existing error rather than silently
+    /// no-op'ing — `start()` would otherwise just `guard` past.
+    func toggle() {
+        refreshPermission()
+        guard permissionState == .granted else {
+            lastError = "Accessibility permission required."
+            return
+        }
+        switch status {
+        case .idle:
+            start()
+        case .capturing:
+            stop()
+        }
+    }
+
     func clear() {
         events.removeAll()
         lastTimestamp = nil
+    }
+
+    /// Surface a user-visible error from auxiliary UI (e.g., the SettingsView
+    /// app picker) through the existing toolbar error badge.
+    func surfaceError(_ message: String) {
+        lastError = message
     }
 
     func copyLog() {
@@ -116,7 +170,8 @@ final class CaptureViewModel {
             kind: raw.kind,
             label: raw.label,
             utcTimestamp: raw.utcTimestamp,
-            intervalMs: interval
+            intervalMs: interval,
+            bundleID: raw.bundleID
         )
         events.append(event)
         lastTimestamp = raw.utcTimestamp

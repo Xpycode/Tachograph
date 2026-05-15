@@ -2,6 +2,9 @@ import SwiftUI
 
 struct ContentView: View {
     @Bindable var vm: CaptureViewModel
+    /// Optional so the existing previews that pass only `vm` keep working.
+    /// Production wires the shared instance from `TachographApp`.
+    var store: AppFilterStore?
     @State private var filterText: String = ""
 
     var body: some View {
@@ -14,6 +17,7 @@ struct ContentView: View {
                 VStack(spacing: 0) {
                     ControlsToolbar(
                         vm: vm,
+                        store: store ?? vm.store,
                         filterText: $filterText,
                         filteredCount: filtered.count,
                         totalCount: vm.events.count
@@ -22,7 +26,7 @@ struct ContentView: View {
                 }
             }
         }
-        .frame(minWidth: 1000, minHeight: 400)
+        .frame(minWidth: 1140, minHeight: 400)
         .task {
             vm.refreshPermission()
         }
