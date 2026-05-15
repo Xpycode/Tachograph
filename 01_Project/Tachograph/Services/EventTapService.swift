@@ -30,12 +30,25 @@ final class EventTapService {
     // which runs on the main run loop (we install the source on CFRunLoopGetMain).
     // That makes them effectively main-thread confined, but Swift 6 strict
     // concurrency can't prove it through the C trampoline — hence nonisolated(unsafe).
-    private nonisolated(unsafe) var continuation: AsyncStream<InputEvent>.Continuation?
+    private nonisolated(unsafe) var continuation: AsyncStream<EventTapMessage>.Continuation?
     private nonisolated(unsafe) var detector = ModifierTapDetector()
     private nonisolated(unsafe) var lastFlags: CGEventFlags = []
     private nonisolated(unsafe) var tap: CFMachPort?
     private nonisolated(unsafe) var source: CFRunLoopSource?
     private nonisolated(unsafe) var filterSnapshot: FilterSnapshot?
+
+    /// Pending keyDown/mouseDown entries awaiting their matching up event.
+    /// Touched only from the callback (same main-runloop reasoning as above).
+    /// Exposed as `nonisolated` (not `private`) so unit tests can exercise
+    /// `recordDown`/`takeUp` directly without driving a real CGEventTap.
+    nonisolated(unsafe) var pendingDowns: [HoldKey: (id: UUID, downNs: UInt64)] = [:]
+    nonisolated(unsafe) var pendingOrder: [HoldKey] = []
+    /// FIFO cap. System chords (Cmd+Tab, Cmd+Space) can swallow keyUp events,
+    /// leaving orphan entries. The cap keeps memory bounded over long sessions
+    /// at the cost of "forgetting" the very oldest unresolved down — its row
+    /// permanently shows `holdMs = nil`, which is the same outcome it would
+    /// have had with an infinite dictionary.
+    nonisolated static let pendingCap = 64
 
     /// Constructor-injected so the callback can read the frontmost bundle ID
     /// without a `Task { await }` hop. Held strongly: in production the same
@@ -53,16 +66,20 @@ final class EventTapService {
         self.monitor = monitor
     }
 
-    func start() throws -> AsyncStream<InputEvent> {
+    func start() throws -> AsyncStream<EventTapMessage> {
         guard Self.isAccessibilityTrusted else { throw TapError.permissionDenied }
         guard tap == nil else { throw TapError.alreadyRunning }
 
         let mask: CGEventMask =
             (1 << CGEventType.keyDown.rawValue) |
+            (1 << CGEventType.keyUp.rawValue) |
             (1 << CGEventType.flagsChanged.rawValue) |
             (1 << CGEventType.leftMouseDown.rawValue) |
+            (1 << CGEventType.leftMouseUp.rawValue) |
             (1 << CGEventType.rightMouseDown.rawValue) |
-            (1 << CGEventType.otherMouseDown.rawValue)
+            (1 << CGEventType.rightMouseUp.rawValue) |
+            (1 << CGEventType.otherMouseDown.rawValue) |
+            (1 << CGEventType.otherMouseUp.rawValue)
 
         // passUnretained: the service is owned by its @MainActor caller; the tap's
         // lifetime is bounded by stop(), so we never need a retained reference here.
@@ -87,8 +104,10 @@ final class EventTapService {
         self.source = runLoopSource
         self.detector = ModifierTapDetector()
         self.lastFlags = []
+        self.pendingDowns = [:]
+        self.pendingOrder = []
 
-        let stream = AsyncStream<InputEvent> { continuation in
+        let stream = AsyncStream<EventTapMessage> { continuation in
             self.continuation = continuation
         }
         return stream
@@ -109,6 +128,10 @@ final class EventTapService {
         detector = ModifierTapDetector()
         lastFlags = []
         filterSnapshot = nil
+        // Pending hold entries are cleared on stop — any in-flight row keeps
+        // holdMs = nil rather than receiving a stale update on the next start.
+        pendingDowns = [:]
+        pendingOrder = []
     }
 
     /// Replaces the live filter snapshot used by the callback's gating check.
@@ -146,10 +169,24 @@ final class EventTapService {
 
         switch type {
         case .keyDown:
+            // Auto-repeat keyDowns are synthesized by the OS while a key is
+            // held. Drop them entirely — both the row and the dictionary entry
+            // — so a long press measures as ONE row spanning the full
+            // press-to-release window rather than N rows each measuring a
+            // single repeat-to-release fragment.
+            if Self.isAutoRepeat(event) { return }
             let keyCode = UInt16(event.getIntegerValueField(.keyboardEventKeycode))
             let label = KeyNameMapper.label(forKeyCode: keyCode, modifiers: event.flags)
             _ = detector.process(.keyDown)
-            yield(InputEvent(kind: .key, label: label, intervalMs: nil, bundleID: frontmost))
+            let row = InputEvent(kind: .key, label: label, intervalMs: nil, bundleID: frontmost)
+            recordDown(.key(keyCode), id: row.id, ns: event.timestamp)
+            yield(.append(row))
+
+        case .keyUp:
+            let keyCode = UInt16(event.getIntegerValueField(.keyboardEventKeycode))
+            if let (id, ms) = takeUp(.key(keyCode), ns: event.timestamp) {
+                yield(.holdUpdate(id: id, holdMs: ms))
+            }
 
         case .flagsChanged:
             let current = event.flags.intersection(Self.modifierMask)
@@ -166,27 +203,89 @@ final class EventTapService {
                 guard let modifier = Self.modifier(forFlag: flag) else { continue }
                 if let emitted = detector.process(.modifierReleased(modifier)),
                    let label = KeyNameMapper.modifierOnlyLabel(for: Self.flag(for: emitted)) {
-                    yield(InputEvent(kind: .modifier, label: label, intervalMs: nil, bundleID: frontmost))
+                    yield(.append(InputEvent(kind: .modifier, label: label, intervalMs: nil, bundleID: frontmost)))
                 }
             }
 
         case .leftMouseDown:
-            yield(InputEvent(kind: .mouse, label: "Left Click", intervalMs: nil, bundleID: frontmost))
+            let row = InputEvent(kind: .mouse, label: "Left Click", intervalMs: nil, bundleID: frontmost)
+            recordDown(.mouseButton(0), id: row.id, ns: event.timestamp)
+            yield(.append(row))
+
+        case .leftMouseUp:
+            if let (id, ms) = takeUp(.mouseButton(0), ns: event.timestamp) {
+                yield(.holdUpdate(id: id, holdMs: ms))
+            }
 
         case .rightMouseDown:
-            yield(InputEvent(kind: .mouse, label: "Right Click", intervalMs: nil, bundleID: frontmost))
+            let row = InputEvent(kind: .mouse, label: "Right Click", intervalMs: nil, bundleID: frontmost)
+            recordDown(.mouseButton(1), id: row.id, ns: event.timestamp)
+            yield(.append(row))
+
+        case .rightMouseUp:
+            if let (id, ms) = takeUp(.mouseButton(1), ns: event.timestamp) {
+                yield(.holdUpdate(id: id, holdMs: ms))
+            }
 
         case .otherMouseDown:
             let button = event.getIntegerValueField(.mouseEventButtonNumber)
-            yield(InputEvent(kind: .mouse, label: "Mouse \(button + 1)", intervalMs: nil, bundleID: frontmost))
+            let row = InputEvent(kind: .mouse, label: "Mouse \(button + 1)", intervalMs: nil, bundleID: frontmost)
+            recordDown(.mouseButton(button), id: row.id, ns: event.timestamp)
+            yield(.append(row))
+
+        case .otherMouseUp:
+            let button = event.getIntegerValueField(.mouseEventButtonNumber)
+            if let (id, ms) = takeUp(.mouseButton(button), ns: event.timestamp) {
+                yield(.holdUpdate(id: id, holdMs: ms))
+            }
 
         default:
             break
         }
     }
 
-    private nonisolated func yield(_ event: InputEvent) {
-        continuation?.yield(event)
+    private nonisolated func yield(_ message: EventTapMessage) {
+        continuation?.yield(message)
+    }
+
+    /// Pure predicate for the keyDown auto-repeat filter — extracted so the
+    /// drop-on-repeat decision can be unit-tested without driving a real
+    /// CGEventTap.
+    nonisolated static func isAutoRepeat(_ event: CGEvent) -> Bool {
+        event.getIntegerValueField(.keyboardEventAutorepeat) != 0
+    }
+
+    /// Records a down event in the pending dictionary. If the key is already
+    /// present (defensive — auto-repeats are filtered, so in practice this
+    /// only fires on edge cases like flushed keyUps), the existing entry is
+    /// replaced without touching the FIFO order. At cap, the oldest entry is
+    /// evicted FIFO; its row's holdMs stays nil permanently.
+    nonisolated func recordDown(_ key: HoldKey, id: UUID, ns: UInt64) {
+        if pendingDowns[key] != nil {
+            pendingDowns[key] = (id, ns)
+            return
+        }
+        if pendingDowns.count >= Self.pendingCap, !pendingOrder.isEmpty {
+            let oldest = pendingOrder.removeFirst()
+            pendingDowns.removeValue(forKey: oldest)
+        }
+        pendingDowns[key] = (id, ns)
+        pendingOrder.append(key)
+    }
+
+    /// Removes a pending entry and returns (id, holdMs) for the matching up
+    /// event. Returns nil if no entry exists (system-chord swallowed keyUp,
+    /// pendingCap eviction, or events from before the last start()).
+    /// Uses `event.timestamp` for both endpoints — nanoseconds since boot,
+    /// monotonic, captured by the OS at event time, immune to clock skew.
+    nonisolated func takeUp(_ key: HoldKey, ns: UInt64) -> (UUID, Int)? {
+        guard let entry = pendingDowns.removeValue(forKey: key) else { return nil }
+        // O(n) but n ≤ pendingCap (64), so this stays well inside the <50 ms
+        // callback budget.
+        pendingOrder.removeAll { $0 == key }
+        let nsDelta: UInt64 = ns >= entry.downNs ? ns - entry.downNs : 0
+        let ms = Int(min(nsDelta / 1_000_000, UInt64(Int.max)))
+        return (entry.id, ms)
     }
 
     /// Pure decision function for "should we record this event?" — extracted

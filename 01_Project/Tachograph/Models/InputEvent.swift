@@ -25,6 +25,7 @@ struct InputEvent: Identifiable, Sendable {
     let bundleID: String?
 
     init(
+        id: UUID = UUID(),
         kind: Kind,
         label: String,
         utcTimestamp: Date = Date(),
@@ -32,7 +33,7 @@ struct InputEvent: Identifiable, Sendable {
         holdMs: Int? = nil,
         bundleID: String? = nil
     ) {
-        self.id = UUID()
+        self.id = id
         self.kind = kind
         self.label = label
         self.utcTimestamp = utcTimestamp

@@ -48,7 +48,7 @@ final class CaptureViewModel {
         // Push the current filter snapshot into the service BEFORE start() so
         // the very first event is gated correctly.
         pushFilterSnapshot()
-        let stream: AsyncStream<InputEvent>
+        let stream: AsyncStream<EventTapMessage>
         do {
             stream = try service.start()
         } catch {
@@ -57,9 +57,14 @@ final class CaptureViewModel {
         }
         status = .capturing
         consumeTask = Task { @MainActor [weak self] in
-            for await raw in stream {
+            for await message in stream {
                 guard let self else { break }
-                self.append(raw: raw)
+                switch message {
+                case .append(let raw):
+                    self.append(raw: raw)
+                case .holdUpdate(let id, let ms):
+                    self.applyHold(id: id, ms: ms)
+                }
             }
         }
     }
@@ -166,14 +171,28 @@ final class CaptureViewModel {
 
     private func append(raw: InputEvent) {
         let interval = Self.intervalMs(from: lastTimestamp, to: raw.utcTimestamp)
+        // Preserve raw.id so the EventTapService's pendingDowns dictionary —
+        // which keyed on the row's id at construction time in the callback —
+        // can match a later .holdUpdate against the row that now lives here.
         let event = InputEvent(
+            id: raw.id,
             kind: raw.kind,
             label: raw.label,
             utcTimestamp: raw.utcTimestamp,
             intervalMs: interval,
+            holdMs: raw.holdMs,
             bundleID: raw.bundleID
         )
         events.append(event)
         lastTimestamp = raw.utcTimestamp
+    }
+
+    /// Patches the holdMs field of the row with the given id. Silently drops
+    /// if the row is no longer in `events` (Clear was pressed mid-hold, or the
+    /// pendingDowns FIFO cap evicted the entry — either way, the absent row
+    /// is the correct outcome).
+    func applyHold(id: UUID, ms: Int) {
+        guard let idx = events.firstIndex(where: { $0.id == id }) else { return }
+        events[idx].holdMs = ms
     }
 }
