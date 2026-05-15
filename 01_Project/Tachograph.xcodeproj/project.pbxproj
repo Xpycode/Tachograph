@@ -15,6 +15,7 @@
 		1BEAC589D7CDFD1FDB777B61 /* DelimitedExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEDCD3DC3AED9662902FE29 /* DelimitedExporter.swift */; };
 		2A2C8D59C266890C3142D556 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A525985C04459AEC0B4314 /* InputEvent.swift */; };
 		522D4AB0130AA3894C58DC41 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 0B162674ADCFCD56A3E234E0 /* KeyboardShortcuts */; };
+		55B4F5491C8286D9DB90B929 /* EventTapMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D63F406671BDC4A522897F /* EventTapMessage.swift */; };
 		61B7CDFE14C9F08D59E07F11 /* EventFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B678E771118A593F80D58 /* EventFilterTests.swift */; };
 		66A7AC70E64BE8FA1B968B42 /* DelimitedExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5013BA43A4E0D9859A116827 /* DelimitedExporterTests.swift */; };
 		7B729FEB67DFB44EAA7730E1 /* AppFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB0D29DFDB6EEC1B17FD86B /* AppFilterTests.swift */; };
@@ -31,6 +32,7 @@
 		AC3CC3CE8765A3C0AD1EA9A9 /* AppDisplayNameLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C57897DA18FD2D9D2C2E1 /* AppDisplayNameLookup.swift */; };
 		AD78E0F0FFF32B0C0BAFA720 /* FrontmostAppMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D957CDA5046A94D1430E8 /* FrontmostAppMonitor.swift */; };
 		B2D65C2AAF7F10D1BDD03EDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F25EE251086BB339BBC23F0C /* Assets.xcassets */; };
+		B529093E7A90BB52326DBA3D /* HoldKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9A44EC4AE3090071D77516 /* HoldKey.swift */; };
 		D1CC954AC24F7C12B23927C3 /* ClipboardExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */; };
 		D66D1D8E0FABAA3764A1B71F /* CaptureViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F2E97B94D06CDEB14C61B0 /* CaptureViewModelTests.swift */; };
 		E8B8C86D8B4A103B87F8D4C6 /* PermissionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CDEF59DCC4749DB2DC4F /* PermissionPanel.swift */; };
@@ -59,6 +61,7 @@
 		14C3C66A8F90FED8EC66E6E2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		19E242EE287C20BB9FA915E4 /* CaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModel.swift; sourceTree = "<group>"; };
 		1BEDCD3DC3AED9662902FE29 /* DelimitedExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelimitedExporter.swift; sourceTree = "<group>"; };
+		2F9A44EC4AE3090071D77516 /* HoldKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldKey.swift; sourceTree = "<group>"; };
 		3473E60651CB698BB06E0CF8 /* ControlsToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsToolbar.swift; sourceTree = "<group>"; };
 		409C03974D15E959C2FBE0BB /* TachographApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TachographApp.swift; sourceTree = "<group>"; };
 		443DC91ABDCAC3807DD09847 /* ModifierTapDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierTapDetectorTests.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		60302C0AEFE2EFA3511C2592 /* EventFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFilter.swift; sourceTree = "<group>"; };
 		755B678E771118A593F80D58 /* EventFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFilterTests.swift; sourceTree = "<group>"; };
 		8530334DB2D45CD78023DF5D /* HotkeyName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyName.swift; sourceTree = "<group>"; };
+		85D63F406671BDC4A522897F /* EventTapMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTapMessage.swift; sourceTree = "<group>"; };
 		865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanaryTests.swift; sourceTree = "<group>"; };
 		9AA391FCC2D4DCF60CA25C4B /* EventTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTable.swift; sourceTree = "<group>"; };
 		A5CD7D3AAD2E3807EFD670ED /* EventTapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTapService.swift; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 			children = (
 				02723FBF157A9B367DE14F3E /* AppFilterStore.swift */,
 				60302C0AEFE2EFA3511C2592 /* EventFilter.swift */,
+				85D63F406671BDC4A522897F /* EventTapMessage.swift */,
+				2F9A44EC4AE3090071D77516 /* HoldKey.swift */,
 				8530334DB2D45CD78023DF5D /* HotkeyName.swift */,
 				11A525985C04459AEC0B4314 /* InputEvent.swift */,
 			);
@@ -318,8 +324,10 @@
 				1BEAC589D7CDFD1FDB777B61 /* DelimitedExporter.swift in Sources */,
 				A8D583CF2747E424744F451C /* EventFilter.swift in Sources */,
 				9DC9D48A2D708C742C49CD84 /* EventTable.swift in Sources */,
+				55B4F5491C8286D9DB90B929 /* EventTapMessage.swift in Sources */,
 				EAA192F92FDEBB7A77FB7D85 /* EventTapService.swift in Sources */,
 				AD78E0F0FFF32B0C0BAFA720 /* FrontmostAppMonitor.swift in Sources */,
+				B529093E7A90BB52326DBA3D /* HoldKey.swift in Sources */,
 				9B0ABB1D7BDD85C0E93B70A1 /* HotkeyName.swift in Sources */,
 				E97C8E9B0A40EC06DEC777B4 /* HotkeyService.swift in Sources */,
 				2A2C8D59C266890C3142D556 /* InputEvent.swift in Sources */,
