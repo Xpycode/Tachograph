@@ -142,15 +142,7 @@ struct SettingsView: View {
     }
 
     private func displayName(for bundleID: String) -> String {
-        if let app = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID).first,
-           let name = app.localizedName {
-            return name
-        }
-        if let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID),
-           let name = Bundle(url: url)?.infoDictionary?["CFBundleName"] as? String {
-            return name
-        }
-        return bundleID
+        AppDisplayNameLookup.displayName(for: bundleID) ?? bundleID
     }
 
     private func appIcon(for bundleID: String) -> some View {

@@ -2,7 +2,7 @@ import XCTest
 @testable import Tachograph
 
 final class ClipboardExporterTests: XCTestCase {
-    private let header = "Key / Button\tUTC Time\tΔ (ms)"
+    private let header = "Key / Button\tApp\tUTC Time\tΔ (ms)"
     private let isoRegex = #"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$"#
 
     func testEmptyEventsProducesHeaderOnlyWithNoTrailingNewline() {
@@ -26,12 +26,13 @@ final class ClipboardExporterTests: XCTestCase {
         XCTAssertEqual(lines[0], header)
 
         let fields = lines[1].components(separatedBy: "\t")
-        XCTAssertEqual(fields.count, 3)
+        XCTAssertEqual(fields.count, 4)
         XCTAssertEqual(fields[0], "⌘ A")
-        XCTAssertEqual(fields[2], "")
+        XCTAssertEqual(fields[1], "", "App cell empty when bundleID is nil")
+        XCTAssertEqual(fields[3], "")
         XCTAssertNotNil(
-            fields[1].range(of: isoRegex, options: .regularExpression),
-            "Timestamp '\(fields[1])' did not match ISO 8601 UTC ms format"
+            fields[2].range(of: isoRegex, options: .regularExpression),
+            "Timestamp '\(fields[2])' did not match ISO 8601 UTC ms format"
         )
     }
 
@@ -56,12 +57,12 @@ final class ClipboardExporterTests: XCTestCase {
 
         let firstFields = lines[1].components(separatedBy: "\t")
         XCTAssertEqual(firstFields[0], "⌘ A")
-        XCTAssertEqual(firstFields[2], "")
+        XCTAssertEqual(firstFields[3], "")
 
         let secondFields = lines[2].components(separatedBy: "\t")
-        XCTAssertEqual(secondFields.count, 3)
+        XCTAssertEqual(secondFields.count, 4)
         XCTAssertEqual(secondFields[0], "Space")
-        XCTAssertEqual(secondFields[2], "138")
+        XCTAssertEqual(secondFields[3], "138")
     }
 
     // Labels containing tab characters are undefined input per spec — the
@@ -78,7 +79,7 @@ final class ClipboardExporterTests: XCTestCase {
         let tsv = ClipboardExporter.tsv(for: [event])
         let rowLine = tsv.components(separatedBy: "\n")[1]
         let fields = rowLine.components(separatedBy: "\t")
-        XCTAssertEqual(fields.count, 4, "Tab inside label is currently unescaped.")
+        XCTAssertEqual(fields.count, 5, "Tab inside label is currently unescaped, splitting one of the four base cells into two.")
     }
 
     func testIsoTimestampShapeMatchesRegex() {
@@ -92,9 +93,9 @@ final class ClipboardExporterTests: XCTestCase {
         let tsv = ClipboardExporter.tsv(for: [event])
         let fields = tsv.components(separatedBy: "\n")[1].components(separatedBy: "\t")
         XCTAssertNotNil(
-            fields[1].range(of: isoRegex, options: .regularExpression),
-            "Timestamp '\(fields[1])' did not match ISO 8601 UTC ms format"
+            fields[2].range(of: isoRegex, options: .regularExpression),
+            "Timestamp '\(fields[2])' did not match ISO 8601 UTC ms format"
         )
-        XCTAssertTrue(fields[1].hasSuffix("Z"))
+        XCTAssertTrue(fields[2].hasSuffix("Z"))
     }
 }

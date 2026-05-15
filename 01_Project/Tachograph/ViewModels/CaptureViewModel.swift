@@ -170,7 +170,8 @@ final class CaptureViewModel {
             kind: raw.kind,
             label: raw.label,
             utcTimestamp: raw.utcTimestamp,
-            intervalMs: interval
+            intervalMs: interval,
+            bundleID: raw.bundleID
         )
         events.append(event)
         lastTimestamp = raw.utcTimestamp

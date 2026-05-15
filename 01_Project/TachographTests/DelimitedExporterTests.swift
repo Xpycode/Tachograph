@@ -2,7 +2,7 @@ import XCTest
 @testable import Tachograph
 
 final class DelimitedExporterTests: XCTestCase {
-    private let csvHeader = "Key / Button,UTC Time,Δ (ms)"
+    private let csvHeader = "Key / Button,App,UTC Time,Δ (ms)"
     private let isoRegex = #"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$"#
 
     // MARK: - Header / empty-events
@@ -16,7 +16,7 @@ final class DelimitedExporterTests: XCTestCase {
 
     func testCsvHeaderMatchesSpec() {
         let csv = renderCSV(events: [])
-        XCTAssertEqual(csv, "Key / Button,UTC Time,Δ (ms)")
+        XCTAssertEqual(csv, "Key / Button,App,UTC Time,Δ (ms)")
     }
 
     // MARK: - Row terminator
@@ -94,12 +94,13 @@ final class DelimitedExporterTests: XCTestCase {
         let row = csv.components(separatedBy: "\r\n")[1]
         let cells = row.components(separatedBy: ",")
 
-        XCTAssertEqual(cells.count, 3)
+        XCTAssertEqual(cells.count, 4, "Header has 4 cells: Key, App, UTC, Δ — row must too.")
         XCTAssertEqual(cells[0], "⌘ A")
-        XCTAssertEqual(cells[2], "")
+        XCTAssertEqual(cells[1], "", "App cell should be empty when bundleID is nil.")
+        XCTAssertEqual(cells[3], "")
         XCTAssertNotNil(
-            cells[1].range(of: isoRegex, options: .regularExpression),
-            "Timestamp '\(cells[1])' did not match ISO 8601 UTC ms format"
+            cells[2].range(of: isoRegex, options: .regularExpression),
+            "Timestamp '\(cells[2])' did not match ISO 8601 UTC ms format"
         )
     }
 
@@ -113,9 +114,19 @@ final class DelimitedExporterTests: XCTestCase {
         XCTAssertEqual(lines[0], csvHeader)
 
         let secondFields = lines[2].components(separatedBy: ",")
-        XCTAssertEqual(secondFields.count, 3)
+        XCTAssertEqual(secondFields.count, 4)
         XCTAssertEqual(secondFields[0], "Space")
-        XCTAssertEqual(secondFields[2], "138")
+        XCTAssertEqual(secondFields[3], "138")
+    }
+
+    func testBundleIDIsEmittedAsAppCell() {
+        let event = makeEvent(label: "Space", intervalMs: 42, bundleID: "com.apple.Safari")
+        let csv = renderCSV(events: [event])
+        let row = csv.components(separatedBy: "\r\n")[1]
+        let cells = row.components(separatedBy: ",")
+
+        XCTAssertEqual(cells[0], "Space")
+        XCTAssertEqual(cells[1], "com.apple.Safari", "App cell should carry the raw bundle ID")
     }
 
     // MARK: - Helpers
@@ -129,12 +140,13 @@ final class DelimitedExporterTests: XCTestCase {
         )
     }
 
-    private func makeEvent(label: String, intervalMs: Int?) -> InputEvent {
+    private func makeEvent(label: String, intervalMs: Int?, bundleID: String? = nil) -> InputEvent {
         InputEvent(
             kind: .key,
             label: label,
             utcTimestamp: Date(timeIntervalSince1970: 1_747_164_137.103),
-            intervalMs: intervalMs
+            intervalMs: intervalMs,
+            bundleID: bundleID
         )
     }
 }

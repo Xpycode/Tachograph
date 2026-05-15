@@ -132,12 +132,14 @@ final class EventTapService {
             return
         }
 
-        // Gate every yield on the per-app filter. Snapshot + frontmost ID are
-        // both lock-free reads; the decision function is pure so it gets
-        // exhaustive coverage in tests without a real CGEventTap.
+        // Snapshot + frontmost ID are both lock-free reads. Read frontmost
+        // ONCE here so the same value gates the filter and stamps the
+        // outgoing event — avoids a race where the decision sees app A and
+        // the event records app B.
+        let frontmost = monitor.currentBundleID
         guard Self.shouldCapture(
             snapshot: filterSnapshot,
-            currentBundleID: monitor.currentBundleID
+            currentBundleID: frontmost
         ) else {
             return
         }
@@ -147,7 +149,7 @@ final class EventTapService {
             let keyCode = UInt16(event.getIntegerValueField(.keyboardEventKeycode))
             let label = KeyNameMapper.label(forKeyCode: keyCode, modifiers: event.flags)
             _ = detector.process(.keyDown)
-            yield(InputEvent(kind: .key, label: label, intervalMs: nil))
+            yield(InputEvent(kind: .key, label: label, intervalMs: nil, bundleID: frontmost))
 
         case .flagsChanged:
             let current = event.flags.intersection(Self.modifierMask)
@@ -164,19 +166,19 @@ final class EventTapService {
                 guard let modifier = Self.modifier(forFlag: flag) else { continue }
                 if let emitted = detector.process(.modifierReleased(modifier)),
                    let label = KeyNameMapper.modifierOnlyLabel(for: Self.flag(for: emitted)) {
-                    yield(InputEvent(kind: .modifier, label: label, intervalMs: nil))
+                    yield(InputEvent(kind: .modifier, label: label, intervalMs: nil, bundleID: frontmost))
                 }
             }
 
         case .leftMouseDown:
-            yield(InputEvent(kind: .mouse, label: "Left Click", intervalMs: nil))
+            yield(InputEvent(kind: .mouse, label: "Left Click", intervalMs: nil, bundleID: frontmost))
 
         case .rightMouseDown:
-            yield(InputEvent(kind: .mouse, label: "Right Click", intervalMs: nil))
+            yield(InputEvent(kind: .mouse, label: "Right Click", intervalMs: nil, bundleID: frontmost))
 
         case .otherMouseDown:
             let button = event.getIntegerValueField(.mouseEventButtonNumber)
-            yield(InputEvent(kind: .mouse, label: "Mouse \(button + 1)", intervalMs: nil))
+            yield(InputEvent(kind: .mouse, label: "Mouse \(button + 1)", intervalMs: nil, bundleID: frontmost))
 
         default:
             break

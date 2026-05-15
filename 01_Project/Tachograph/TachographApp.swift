@@ -23,7 +23,7 @@ struct TachographApp: App {
             ContentView(vm: vm, store: store)
                 .task { hotkey.register() }
         }
-        .defaultSize(width: 1040, height: 560)
+        .defaultSize(width: 1180, height: 560)
         .windowResizability(.contentMinSize)
         .commands {
             CommandGroup(replacing: .newItem) {}

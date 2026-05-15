@@ -28,6 +28,7 @@
 		A812ED8AF876A184DED16B7F /* CanaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865E2CCC08F5F2F2BA3E2E56 /* CanaryTests.swift */; };
 		A8D583CF2747E424744F451C /* EventFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60302C0AEFE2EFA3511C2592 /* EventFilter.swift */; };
 		A97AA6199395E3862BD8E716 /* TachographApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409C03974D15E959C2FBE0BB /* TachographApp.swift */; };
+		AC3CC3CE8765A3C0AD1EA9A9 /* AppDisplayNameLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C57897DA18FD2D9D2C2E1 /* AppDisplayNameLookup.swift */; };
 		AD78E0F0FFF32B0C0BAFA720 /* FrontmostAppMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D957CDA5046A94D1430E8 /* FrontmostAppMonitor.swift */; };
 		B2D65C2AAF7F10D1BDD03EDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F25EE251086BB339BBC23F0C /* Assets.xcassets */; };
 		D1CC954AC24F7C12B23927C3 /* ClipboardExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */; };
@@ -82,6 +83,7 @@
 		F1E1B1BDDC7A773E6D2EE333 /* CaptureViewModelToggleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModelToggleTests.swift; sourceTree = "<group>"; };
 		F25EE251086BB339BBC23F0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F73D957CDA5046A94D1430E8 /* FrontmostAppMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontmostAppMonitor.swift; sourceTree = "<group>"; };
+		FA3C57897DA18FD2D9D2C2E1 /* AppDisplayNameLookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDisplayNameLookup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		09EC8A07FF57B70AA136CBE3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				FA3C57897DA18FD2D9D2C2E1 /* AppDisplayNameLookup.swift */,
 				B5CFDE1D28B85B6724800F18 /* ClipboardExporter.swift */,
 				5702EC8A4B227BF98AAB9E35 /* CSVDocument.swift */,
 				1BEDCD3DC3AED9662902FE29 /* DelimitedExporter.swift */,
@@ -305,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC3CC3CE8765A3C0AD1EA9A9 /* AppDisplayNameLookup.swift in Sources */,
 				87126FFC6E53C04D374AC6EB /* AppFilterStore.swift in Sources */,
 				9D84B9E85A74C6CBB4D6B47A /* CSVDocument.swift in Sources */,
 				03AF8B40AD03881F1C209F13 /* CaptureViewModel.swift in Sources */,

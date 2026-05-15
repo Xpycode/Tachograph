@@ -11,8 +11,12 @@ import Foundation
 ///   quotes are escaped by doubling (RFC 4180).
 ///
 /// The output never has a trailing line terminator.
+///
+/// The "App" column emits the bundle ID raw (e.g. `com.apple.Safari`) because
+/// it's machine-readable, locale-stable, and joinable in a spreadsheet. The
+/// display name is shown in the in-app table only.
 enum DelimitedExporter {
-    static let headerCells: [String] = ["Key / Button", "UTC Time", "Δ (ms)"]
+    static let headerCells: [String] = ["Key / Button", "App", "UTC Time", "Δ (ms)"]
 
     static func render(
         events: [InputEvent],
@@ -32,7 +36,8 @@ enum DelimitedExporter {
         for event in events {
             let timestamp = formatter.string(from: event.utcTimestamp)
             let intervalCell = event.intervalMs.map(String.init) ?? ""
-            let cells = [event.label, timestamp, intervalCell]
+            let appCell = event.bundleID ?? ""
+            let cells = [event.label, appCell, timestamp, intervalCell]
                 .map { encode($0, delimiter: delimiter, quote: quote) }
             lines.append(cells.joined(separator: delimiter))
         }
