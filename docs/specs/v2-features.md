@@ -9,7 +9,7 @@
 
 ## Scope
 
-Six features from `docs/ideas.md` promoted into v2:
+Original six features from `docs/ideas.md` promoted into v2:
 
 1. **Key-hold duration column** (reverses the 2026-05-13 decision)
 2. **Pause/resume global hotkey**
@@ -17,6 +17,11 @@ Six features from `docs/ideas.md` promoted into v2:
 4. **Per-app capture filter** (allow list)
 5. **Heat-map / histogram view**
 6. **CSV export to file**
+
+Mid-wave additions (decided once the supporting infrastructure was in place):
+
+7. **W2-C · Active-app column.** Once `FrontmostAppMonitor` shipped for the per-app filter, stamping each event with its frontmost bundle ID was a few lines and unlocked exports + a per-event "App" column. Added 2026-05-15 between Wave 2 and the merge.
+8. **W3-C · Mouse coordinates + AX element label.** Both naturally use W3-A's pair-and-patch stream reshape: coords go straight on the event, AX lookup is a slow background enrichment that patches the row by id. Added 2026-05-15.
 
 Not in v2 (still parked): rolling buffer, multi-session history, menu bar mode, sound on key press, auto-clear after N minutes.
 
@@ -280,6 +285,78 @@ BarMark(x: .value("Count", count),
 
 ---
 
+### W3-C · Mouse coordinates + AX element label
+
+**Two complementary additions, both gated on W3-A's stream reshape.** Coordinates ride on the original `.append` message (cheap, captured in the callback). Element labels arrive later via a new `.elementHint(id, role:, title:)` message because the AX lookup is too slow for the callback path.
+
+#### Mouse coordinates
+
+**Recommendation.** Capture global screen coords from `event.location` in the existing CGEventTap callback for mouse events; add `point: CGPoint?` to `InputEvent` (nil for keys/modifiers). Render in a new "Position" column as `(x, y)` rounded to integers. Same global frame as the AX/screen coordinate system used everywhere else in macOS.
+
+**Why screen coords, not app-relative.**
+- App-relative requires looking up the frontmost app's window geometry per event (`CGWindowListCopyWindowInfo` or AX). Adds a per-callback lookup and complicates the data model.
+- Screen coords are unambiguous, locale-stable, and trivially convertible app-side later if a downstream tool wants them.
+- Future: an "App-relative coords" toggle in Settings could derive `(x − windowOrigin.x, y − windowOrigin.y)` post-hoc from `bundleID + utcTimestamp + point`. Out of scope for W3-C; keep the door open by storing screen coords as canonical.
+
+#### AX element label
+
+**Recommendation.** Off the callback, on a serial background queue, do `AXUIElementCopyElementAtPosition(systemWide, point.x, point.y, &element)` and read `kAXRoleAttribute` + (`kAXTitleAttribute` || `kAXValueAttribute` || `kAXDescriptionAttribute`). When (and if) it returns, post `EventTapMessage.elementHint(id: rowID, role: String, title: String?)` on the stream; ViewModel patches the row by id (same path W3-A already built).
+
+**Permission story.** Uses the existing **Accessibility** TCC bucket (`kTCCServiceAccessibility`). **NOT** Screen Recording (`kTCCServiceScreenCapture`) — those are separate. So no new permission prompt; if our event tap works, AX lookups work.
+
+**Quality-by-app expectations.** AppKit / SwiftUI native apps return rich data (`AXButton`, "Send", etc.). WebKit content returns `AXGroup` with the page's `aria-label` if present. Electron varies per app's accessibility flag. Games and full-screen GL/Metal apps return nothing useful. Document in a tooltip: "Hover to see what AX returned; some apps don't expose this."
+
+**Worker queue.** One serial `DispatchQueue(label: "tachograph.ax-enrich")` so AX queries don't pile up if a target app is hung. Drop enrichment requests if more than ~20 are queued — accept stale `nil` rather than a backed-up worker. Each work item carries `(rowID, point, deadline)`; if `Date() > deadline` (e.g. 2s old), drop without doing the AX call.
+
+**Stream payload extension (extends W3-A).**
+```swift
+enum EventTapMessage: Sendable {
+    case append(InputEvent)
+    case holdUpdate(id: UUID, holdMs: Int)            // W3-A
+    case elementHint(id: UUID, role: String, title: String?)  // W3-C
+}
+```
+
+**Schema diff.**
+```swift
+struct InputEvent {
+    // existing fields including holdMs from W3-A
+    let point: CGPoint?     // nil for non-mouse events
+    let elementRole: String?    // patched async
+    let elementTitle: String?   // patched async
+}
+```
+
+**Column placement.** Insert "Position" between "App" and "UTC Time" (only renders for mouse events; key rows show `—`). Insert "Element" between "Position" and "UTC Time". This makes the row read: *what → where (app) → where (point) → what (element) → when → Δ → hold*. Wide. Window minWidth bumps again — likely 1280–1340; revisit when implementing.
+
+**Files touched.**
+- `Models/InputEvent.swift` — add `point`, `elementRole`, `elementTitle`.
+- `Services/EventTapService.swift` — read `event.location` for mouse events into `InputEvent.point`; enqueue an AX lookup for each click; emit `.elementHint` on completion.
+- `Services/AXElementLookup.swift` *(new)* — wraps `AXUIElementCopyElementAtPosition` + attribute reads on a serial queue; deadline-drop policy.
+- `ViewModels/CaptureViewModel.swift` — handle the new `.elementHint` message; patch row by id.
+- `Views/EventTable.swift` — two new columns, `(x, y)` formatter for Position, role+title rendering for Element with bundle ID still on the row hover.
+- `Services/DelimitedExporter.swift` — add `Position`, `Element Role`, `Element Title` columns.
+- `Views/ContentView.swift` — bump minWidth.
+- `TachographApp.swift` — bump defaultSize.
+- Tests for: AX lookup queue depth limit, deadline drop, message-merge ordering (hold update vs element hint vs append), row-not-found-id.
+
+**Gotchas.**
+- AX queries can deadlock if the target app's main thread is calling back into AX simultaneously (rare, documented). The deadline-drop policy is the safety net.
+- `AXUIElementCopyElementAtPosition` is occasionally racy: by the time the lookup runs, the user may have moved the mouse and the element under the original point may have changed. Acceptable — we recorded the point that was clicked, the element is best-effort context.
+- Some apps return AXTitle that's just the role ("Button"); prefer a concrete title via `AXValueAttribute` or `AXDescription` fallback chain. Document the fallback.
+- WebKit subprocesses: AX bridge is per-process, may be slow (50-200ms); falls under deadline-drop.
+- Coordinates from `CGEvent.location` are in the event's coordinate system — usually the main display origin, but multi-display setups with negative coords are possible. Don't clamp.
+
+**Non-goals (deliberate).**
+- App-relative coordinates: out of scope, deferred.
+- Screenshot at click point: would need Screen Recording permission, ruled out.
+- AX subtree (parent labels, ancestors): too slow + verbose; just role + title.
+- Replaying clicks/keystrokes: not in v2 at all.
+
+**Complexity.** M. New file (`AXElementLookup`), one new stream variant, two new table columns, two new export columns, async patch path. Well-isolated; no risk to capture-pipeline latency because all AX work happens off the callback.
+
+---
+
 ## Execution order
 
 ```
@@ -287,13 +364,13 @@ Wave 1  ──┬── W1-A CSV export        (parallel)
           └── W1-B Filter/search      (parallel)
                   │
                   ▼
-Wave 2  ──── W2-A Hotkey  ──→  W2-B Per-app filter    (sequential, shared SettingsView)
+Wave 2  ──── W2-A Hotkey  ──→  W2-B Per-app filter  ──→  W2-C App column   (sequential, shared SettingsView; W2-C piggybacks on W2-B's monitor)
                   │
                   ▼
-Wave 3  ──── W3-A Key-hold  ──→  W3-B Heat-map        (sequential, stream-shape dep)
+Wave 3  ──── W3-A Key-hold  ──→  W3-B Heat-map  ──→  W3-C Coords + AX     (sequential; W3-C piggybacks on W3-A's pair-and-patch stream)
 ```
 
-Total: 6 features across 3 waves. 2 × S, 3 × S/M, 1 × M.
+Total: 8 features across 3 waves. 2 × S, 4 × S/M, 2 × M.
 
 ---
 
@@ -304,6 +381,7 @@ Total: 6 features across 3 waves. 2 × S, 3 × S/M, 1 × M.
 - **`isExporting` two-way binding** needs a stored `var` on the `@Observable` VM (Swift 6 concurrency cleanliness).
 - **Heat-map degenerate domain** with 0–1 events → guard with `ContentUnavailableView`.
 - **Key-hold stream type change** ripples through service + VM together; land as one atomic PR.
+- **AX enrichment latency (W3-C).** AX lookups can take 5–200 ms per call. Strict separation from the callback path is mandatory; backpressure via deadline-drop is required, not nice-to-have.
 
 ---
 
@@ -315,6 +393,7 @@ Total: 6 features across 3 waves. 2 × S, 3 × S/M, 1 × M.
 - **W2-B:** `FrontmostAppMonitor.shouldCapture` for empty / matching / non-matching list.
 - **W3-A:** pair-emit, auto-repeat dropped, stop-while-held leaves nil, TSV/CSV column ordering.
 - **W3-B:** bucket ladder transitions, empty events, single-event, span boundary.
+- **W3-C:** AX queue depth cap, deadline-drop, `elementHint` patch by id (incl. id-not-found = drop), point captured for mouse only / nil for keys, TSV/CSV column ordering.
 
 ---
 
