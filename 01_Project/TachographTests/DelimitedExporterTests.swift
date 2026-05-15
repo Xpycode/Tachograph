@@ -2,7 +2,7 @@ import XCTest
 @testable import Tachograph
 
 final class DelimitedExporterTests: XCTestCase {
-    private let csvHeader = "Key / Button,App,UTC Time,Δ (ms)"
+    private let csvHeader = "Key / Button,App,UTC Time,Δ (ms),Hold (ms)"
     private let isoRegex = #"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$"#
 
     // MARK: - Header / empty-events
@@ -16,7 +16,7 @@ final class DelimitedExporterTests: XCTestCase {
 
     func testCsvHeaderMatchesSpec() {
         let csv = renderCSV(events: [])
-        XCTAssertEqual(csv, "Key / Button,App,UTC Time,Δ (ms)")
+        XCTAssertEqual(csv, "Key / Button,App,UTC Time,Δ (ms),Hold (ms)")
     }
 
     // MARK: - Row terminator
@@ -94,10 +94,11 @@ final class DelimitedExporterTests: XCTestCase {
         let row = csv.components(separatedBy: "\r\n")[1]
         let cells = row.components(separatedBy: ",")
 
-        XCTAssertEqual(cells.count, 4, "Header has 4 cells: Key, App, UTC, Δ — row must too.")
+        XCTAssertEqual(cells.count, 5, "Header has 5 cells: Key, App, UTC, Δ, Hold — row must too.")
         XCTAssertEqual(cells[0], "⌘ A")
         XCTAssertEqual(cells[1], "", "App cell should be empty when bundleID is nil.")
         XCTAssertEqual(cells[3], "")
+        XCTAssertEqual(cells[4], "", "Hold cell should be empty when holdMs is nil.")
         XCTAssertNotNil(
             cells[2].range(of: isoRegex, options: .regularExpression),
             "Timestamp '\(cells[2])' did not match ISO 8601 UTC ms format"
@@ -114,9 +115,10 @@ final class DelimitedExporterTests: XCTestCase {
         XCTAssertEqual(lines[0], csvHeader)
 
         let secondFields = lines[2].components(separatedBy: ",")
-        XCTAssertEqual(secondFields.count, 4)
+        XCTAssertEqual(secondFields.count, 5)
         XCTAssertEqual(secondFields[0], "Space")
         XCTAssertEqual(secondFields[3], "138")
+        XCTAssertEqual(secondFields[4], "", "Hold cell empty when holdMs is nil (not set by this test).")
     }
 
     func testBundleIDIsEmittedAsAppCell() {

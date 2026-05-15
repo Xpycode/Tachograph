@@ -103,6 +103,17 @@ struct EventTable: View {
                     }
                 }
                 .width(min: 80, ideal: 80)
+
+                TableColumn("Hold (ms)") { event in
+                    HStack {
+                        Spacer()
+                        Text(verbatim: event.holdMs.map { $0.formatted(.number.grouping(.never)) } ?? "—")
+                            .font(.system(.body, design: .monospaced))
+                            .monospacedDigit()
+                            .foregroundStyle(event.holdMs == nil ? .tertiary : .primary)
+                    }
+                }
+                .width(min: 90, ideal: 100)
             }
             .onChange(of: events.last?.id) { _, _ in
                 guard let lastID = events.last?.id else { return }
