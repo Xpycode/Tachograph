@@ -169,7 +169,7 @@ final class CaptureViewModel {
         return max(0, Int(ms))
     }
 
-    private func append(raw: InputEvent) {
+    func append(raw: InputEvent) {
         let interval = Self.intervalMs(from: lastTimestamp, to: raw.utcTimestamp)
         // Preserve raw.id so the EventTapService's pendingDowns dictionary —
         // which keyed on the row's id at construction time in the callback —
