@@ -16,7 +16,7 @@ import Foundation
 /// it's machine-readable, locale-stable, and joinable in a spreadsheet. The
 /// display name is shown in the in-app table only.
 enum DelimitedExporter {
-    static let headerCells: [String] = ["Key / Button", "App", "UTC Time", "Δ (ms)"]
+    static let headerCells: [String] = ["Key / Button", "App", "UTC Time", "Δ (ms)", "Hold (ms)"]
 
     static func render(
         events: [InputEvent],
@@ -36,8 +36,11 @@ enum DelimitedExporter {
         for event in events {
             let timestamp = formatter.string(from: event.utcTimestamp)
             let intervalCell = event.intervalMs.map(String.init) ?? ""
+            // Empty string (not "—") for nil holds so downstream tooling
+            // parses the numeric column cleanly — same convention as Δ (ms).
+            let holdCell = event.holdMs.map(String.init) ?? ""
             let appCell = event.bundleID ?? ""
-            let cells = [event.label, appCell, timestamp, intervalCell]
+            let cells = [event.label, appCell, timestamp, intervalCell, holdCell]
                 .map { encode($0, delimiter: delimiter, quote: quote) }
             lines.append(cells.joined(separator: delimiter))
         }

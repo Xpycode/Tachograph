@@ -2,7 +2,7 @@ import XCTest
 @testable import Tachograph
 
 final class ClipboardExporterTests: XCTestCase {
-    private let header = "Key / Button\tApp\tUTC Time\tΔ (ms)"
+    private let header = "Key / Button\tApp\tUTC Time\tΔ (ms)\tHold (ms)"
     private let isoRegex = #"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$"#
 
     func testEmptyEventsProducesHeaderOnlyWithNoTrailingNewline() {
@@ -26,10 +26,11 @@ final class ClipboardExporterTests: XCTestCase {
         XCTAssertEqual(lines[0], header)
 
         let fields = lines[1].components(separatedBy: "\t")
-        XCTAssertEqual(fields.count, 4)
+        XCTAssertEqual(fields.count, 5)
         XCTAssertEqual(fields[0], "⌘ A")
         XCTAssertEqual(fields[1], "", "App cell empty when bundleID is nil")
         XCTAssertEqual(fields[3], "")
+        XCTAssertEqual(fields[4], "", "Hold cell empty when holdMs is nil")
         XCTAssertNotNil(
             fields[2].range(of: isoRegex, options: .regularExpression),
             "Timestamp '\(fields[2])' did not match ISO 8601 UTC ms format"
@@ -60,9 +61,10 @@ final class ClipboardExporterTests: XCTestCase {
         XCTAssertEqual(firstFields[3], "")
 
         let secondFields = lines[2].components(separatedBy: "\t")
-        XCTAssertEqual(secondFields.count, 4)
+        XCTAssertEqual(secondFields.count, 5)
         XCTAssertEqual(secondFields[0], "Space")
         XCTAssertEqual(secondFields[3], "138")
+        XCTAssertEqual(secondFields[4], "", "Hold cell empty when holdMs is nil")
     }
 
     // Labels containing tab characters are undefined input per spec — the
@@ -79,7 +81,7 @@ final class ClipboardExporterTests: XCTestCase {
         let tsv = ClipboardExporter.tsv(for: [event])
         let rowLine = tsv.components(separatedBy: "\n")[1]
         let fields = rowLine.components(separatedBy: "\t")
-        XCTAssertEqual(fields.count, 5, "Tab inside label is currently unescaped, splitting one of the four base cells into two.")
+        XCTAssertEqual(fields.count, 6, "Tab inside label is currently unescaped, splitting one of the five base cells into two.")
     }
 
     func testIsoTimestampShapeMatchesRegex() {
