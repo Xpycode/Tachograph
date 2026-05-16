@@ -25,6 +25,8 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ## 2026-05-13 — Duration column = inter-event interval (not key-hold duration)
 
+> **Status:** Superseded by the 2026-05-14 v2 CFD-4 entry below — W3-A landed both Δ and Hold columns 2026-05-16.
+
 **Context:** User asked for "how long it was when it was pressed" alongside each event.
 
 **Options considered:**
@@ -145,7 +147,7 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ## 2026-05-14 — v2: Event-tap stream type changes only in Wave 3 [RATIFIED]
 
-**Status:** ratified 2026-05-15 — W2-B landed without touching the stream shape. `AsyncStream<InputEvent>` still in use; per-app filter is a single membership-check guard before `yield(...)` in `EventTapService.handle`. Stream-type refactor to `AsyncStream<EventTapMessage>` deferred to W3-A as planned.
+**Status:** ratified 2026-05-15 — W2-B landed without touching the stream shape; further ratified 2026-05-16 — W3-A reshaped the stream to `AsyncStream<EventTapMessage>` with cases `.append(InputEvent) | .holdUpdate(id: UUID, holdMs: Int)` as planned. The per-app filter gate stayed identical (single membership check before `yield(...)`); the message-type switch lives in `CaptureViewModel`. `AsyncStream<InputEvent>` is gone from the project.
 
 **Context:** W3-A (key-hold duration) needs the service to emit two kinds of messages: append-row and update-row-by-id. Today the service yields `AsyncStream<InputEvent>`. W2-B (per-app filter) also touches the service, but only to gate `yield(...)` on bundle-ID membership.
 
@@ -160,9 +162,22 @@ This file tracks the WHY behind technical and design decisions for Tachograph.
 
 ---
 
-## 2026-05-14 — v2: Reverse the 2026-05-13 "no key-hold" decision [PENDING]
+## 2026-05-14 — v2: Reverse the 2026-05-13 "no key-hold" decision [RATIFIED]
 
-**Status:** pending — supersedes the 2026-05-13 "Duration column = inter-event interval (not key-hold duration)" entry above when W3-A lands.
+**Status:** ratified 2026-05-16 — W3-A landed. Supersedes the 2026-05-13 "Duration column = inter-event interval (not key-hold duration)" entry above; that entry is annotated accordingly.
+
+**What shipped:**
+- `InputEvent.holdMs: Int?` (var) — nil while held / unresolved; mutated in place by `CaptureViewModel.applyHold(id:ms:)`.
+- `EventTapMessage` enum with `.append(InputEvent) | .holdUpdate(id: UUID, holdMs: Int)`. Stream type is now `AsyncStream<EventTapMessage>` end-to-end.
+- `HoldKey` discriminated enum (`.key(UInt16) | .mouseButton(Int64)`) keys the pending-downs dictionary so keyboard and mouse buttons share one map without overlapping number spaces.
+- `EventTapService.pendingDowns` + `pendingOrder` (FIFO) with `pendingCap = 64` — orphaned downs (system-chord-swallowed keyUps) get evicted oldest-first and their rows permanently show `holdMs = nil`.
+- Hold duration computed from `event.timestamp` (monotonic ns since boot, OS-captured at event time, immune to clock skew).
+- Auto-repeat keyDowns dropped via `EventTapService.isAutoRepeat(_:)` (`kCGKeyboardEventAutorepeat != 0`). This is a user-visible change: holding a key now produces one row spanning the full press-to-release window instead of one row per OS repeat.
+- 5th table column "Hold (ms)" right of Δ. TSV/CSV gain "Hold (ms)" at end (empty string for nil — same convention as Δ).
+- `InputEvent.init` accepts an optional `id: UUID = UUID()` so `CaptureViewModel.append(raw:)` can preserve the row id that was seeded into pendingDowns at callback time. Without this, a later `.holdUpdate` would never match.
+- Modifiers (flagsChanged path) deliberately keep `holdMs = nil` — their press/release semantics live in `ModifierTapDetector`, not the holdMs dictionary.
+
+**Behavior change called out at merge:** users who relied on auto-repeats producing a row per repeat will see only one row now. Re-introducing that behavior is a separate feature; not planned.
 
 **Context:** The 2026-05-13 decision deferred key-hold duration in favour of inter-event interval, citing the "messy state machine" of keyDown→keyUp pairing. The user now wants both columns: Δ (ms) stays for inter-event timing, **Hold (ms)** adds for per-key press duration.
 
